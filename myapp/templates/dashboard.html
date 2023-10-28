@@ -3,22 +3,29 @@
 {% block content %}
     <br><br>
 <div class="row">
-                {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ENTREVISTADOR' %}
+    {% if request.user|has_role:'TESTIGO' %}
 
-  <div class="d-flex justify-content-center align-items-center">
-    <a href="{% url 'app:new_encuesta' %}" class="fcc-btn text-center font_poppins ">
-        <i class="fa fa-plus fa-2x" aria-hidden="true"></i><br>
-        Encuestar
-    </a>
-    </div>
-{% endif %}
+            {% for comuna in mesa_list %}
+                <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <a class="text-decoration-none"
+                        href="{% url 'app:mesa' id=1 %}">
+                        <div class="card-body text-center  card_comuna">
+                           Mesa {{ comuna }}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+
+    {% endif %}
 
 </div>
     <br><br><br><br>
     <div class="row">
         <div class="d-flex align-items-center mb-3 pb-1">
-                                        <img class="mx-auto d-block" src="{% static 'img/logo.png' %}" height="100"
-                                             alt="logo">
-                                    </div>
+            <img class="mx-auto d-block" src="{% static 'img/logo.png' %}" height="100"
+                 alt="logo">
+        </div>
     </div>
 {% endblock %}

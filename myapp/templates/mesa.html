@@ -1,0 +1,44 @@
+ {% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block content %}
+<div class="container">
+    <h1 class="mt-5">Formulario</h1>
+
+    <!-- El formulario con Bootstrap -->
+    <form id="miFormulario">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Campo 1 -->
+                <div class="form-group">
+                    <label for="campo1">Campo 1:</label>
+                    <input type="text" id="campo1" name="campo1" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="editar btn btn-primary" data-field="campo1">Editar</button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="guardar btn btn-success" data-field="campo1">Guardar</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Campo 2 -->
+                <div class="form-group">
+                    <label for="campo2">Campo 2:</label>
+                    <input type="text" id="campo2" name="campo2" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="editar btn btn-primary" data-field="campo2">Editar</button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="guardar btn btn-success" data-field="campo2">Guardar</button>
+            </div>
+        </div>
+
+        <!-- Otros campos aquí... -->
+    </form>
+</div>
+{% endblock %}
