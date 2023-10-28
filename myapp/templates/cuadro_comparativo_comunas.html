@@ -1,0 +1,137 @@
+{% extends "base.html" %} {% load permissions_tags %} {% load static %}
+
+{% block content %}
+        <a class="text-decoration-none" href="javascript:history.back()">
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+
+             Volver Atrás
+         </a>
+    <br>
+
+    <h1 class="third_color_text text-center">
+        <i class="fa  fa-calculator" aria-hidden="true"></i>
+
+        Cuadro comparativo Comunas </h1>
+    <br>
+
+
+        <h2>
+            Ganamos
+        </h2>
+
+        <div class="table-responsive">
+            <table id="distributions" class="table table-bordered text-center  ">
+                <thead>
+                    <tr>
+                        <th class="align-middle">ITEM</th>
+                        <th class="align-middle">COMUNAS</th>
+                        <th class="align-middle">NUMERO</th>
+                        <th class="align-middle">PORCENTAJE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for win in b_ganamos %}
+                    <tr>
+                        <td class="align-middle"> {{ forloop.counter }} </td>
+                        <td class="align-middle"> {{ win.name }} </td>
+                        <td class="align-middle"> {{ win.number }} </td>
+                        <td class="align-middle"> {{ win.percentage }} </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+
+        <h2>
+            Perdemos
+        </h2>
+
+        <div class="table-responsive">
+            <table id="distributions" class="table table-bordered text-center  ">
+                <thead>
+                    <tr>
+                        <th class="align-middle">ITEM</th>
+                        <th class="align-middle">BARRIOS</th>
+                        <th class="align-middle">NUMERO</th>
+                        <th class="align-middle">PORCENTAJE</th>
+                        <th class="align-middle">CON</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for win in b_perdemos %}
+                    <tr>
+                        <td class="align-middle"> {{ forloop.counter }} </td>
+                        <td class="align-middle"> {{ win.name }} </td>
+                        <td class="align-middle"> {{ win.number }} </td>
+                        <td class="align-middle"> {{ win.percentage }} </td>
+                        <td class="align-middle"> {{ win.with }} </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+        <h2>
+            Empate
+        </h2>
+
+        <div class="table-responsive">
+            <table id="distributions" class="table table-bordered text-center  ">
+                <thead>
+                    <tr>
+                        <th class="align-middle">ITEM</th>
+                        <th class="align-middle">BARRIOS</th>
+                        <th class="align-middle">NUMERO</th>
+                        <th class="align-middle">PORCENTAJE</th>
+                        <th class="align-middle">CON</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for win in b_empate %}
+                    <tr>
+                        <td class="align-middle"> {{ forloop.counter }} </td>
+                        <td class="align-middle"> {{ win.name }} </td>
+                        <td class="align-middle"> {{ win.number }} </td>
+                        <td class="align-middle"> {{ win.percentage }} </td>
+                        <td class="align-middle"> {{ win.with }} </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+        <h2>
+            No Tiene
+        </h2>
+
+        <div class="table-responsive">
+            <table id="distributions" class="table table-bordered text-center  ">
+                <thead>
+                    <tr>
+                        <th class="align-middle">ITEM</th>
+                        <th class="align-middle">BARRIOS</th>
+                        <th class="align-middle">NUMERO</th>
+                        <th class="align-middle">PORCENTAJE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for win in b_no_tiene %}
+                    <tr>
+                        <td class="align-middle"> {{ forloop.counter }} </td>
+                        <td class="align-middle"> {{ win.name }} </td>
+                        <td class="align-middle"> {{ win.number }} </td>
+                        <td class="align-middle"> {{ win.percentage }} </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+
+{% endblock %}
+

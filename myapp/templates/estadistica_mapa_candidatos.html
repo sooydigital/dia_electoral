@@ -1,0 +1,182 @@
+{% extends "base.html" %} {% load permissions_tags %} {% load static %}
+
+{% block headcontent %}
+    <script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+{% endblock %}
+
+
+{% block content %}
+        <a class="text-decoration-none" href="javascript:history.back()">
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+             Volver Atrás
+         </a>
+    <h1 class="text-center verde_color_text">
+        <i class="fa fa-area-chart" aria-hidden="true"></i>
+
+        GEO-Mapa Candidatos </h1>
+        <br>
+
+        <input type="hidden" id="pull_base_id" value="{{ id }}">
+        <select  id="select_preguntas"  class="bootstrap-select-custom selectpicker" data-live-search="true">
+            {% for pregunta in preguntas %}
+                <option value={{ pregunta.id }}>{{ pregunta.label }}</option>
+            {% endfor %}
+        </select>
+
+        <select  id="select_barrio"  class="selectpicker" data-live-search="true">
+            <option value="all">Todo</option>
+
+            {% for barrio in barrios %}
+                <option value={{ barrio.id }}>{{ barrio.name }}</option>
+            {% endfor %}
+        </select>
+
+        <select  id="select_comuna"  class="selectpicker" data-live-search="true">
+            <option value="all">Todo</option>
+
+            {% for comuna in comunas %}
+                <option value={{ comuna.id }}>{{ comuna.name }}</option>
+            {% endfor %}
+        </select>
+
+    <input type="hidden" value="46" id="pregunta_id">
+    {% csrf_token %}
+    <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+
+
+
+{% endblock %}
+
+
+{% block scriptcontent %}
+
+    <script type="text/javascript">
+        $(document).ready(function(e) {
+            $( "#select_preguntas" ).change(function() {
+              CallAndPlot();
+            });
+
+            $( "#select_barrio" ).change(function() {
+              CallAndPlot();
+            });
+
+            $( "#select_comuna" ).change(function() {
+              CallAndPlot();
+            });
+        });
+
+        function pintarMapa(data) {
+            console.log('pintare un mapa', data)
+            var data_map = []
+            for (const [name, value] of Object.entries(data)) {
+                data_map.push({
+                    name: name,
+                    type: "scattermapbox",
+                    lon: value.lon,
+                    lat: value.lat,
+                    text: value.id,
+                    marker: {
+                        size: 10,
+                        opacity: 0.9
+
+                    },
+                })
+            }
+
+            var height = 800
+            var margin = {"b": 40, "l": 40, "r": 40, "t": 40}
+            var zoom = 12
+            if (screen.width < 500) {
+                height = 1200
+                margin = {"b": 10, "l": 10, "r": 10, "t": 10}
+                zoom = 13
+            }
+
+            console.log('height', height)
+            console.log('margin', margin)
+            var layout = {
+                "title": "",
+                "autosize": true,
+                "height": height,
+                "legend": {"x": 0, "y": 1},
+                "mapbox": {"zoom": zoom, "center": {"lat": 7.1225823, "lon": -73.1183585}},
+                "margin": margin
+            }
+            var config = {
+                "mapboxAccessToken": "pk.eyJ1IjoiY2hyaWRkeXAiLCJhIjoiY2lxMnVvdm5iMDA4dnhsbTQ5aHJzcGs0MyJ9.X9o_rzNLNesDxdra4neC_A"
+            }
+
+            Plotly.newPlot("myDiv_super_visor_map", data_map, layout, config = config);
+
+        }
+
+        function EncuestasInfoByEncuestadorSuccessCallback(data) {
+            pintarMapa(data.data)
+        }
+
+        function EncuestasInfoByEncuestadorErrorCallback() {
+            console.log('barriosErrorCallback, error trayendo la info de  EncuestasInfoByEncuestador ')
+
+        }
+
+        var getEncuestasInfoByEncuestador = (data, successCallback, errorCallback,) => {
+            var url = `/api/get_all_locations_by_params/`
+            $.ajax({
+                type: 'POST',
+                url,
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data),
+
+                dataType : 'json',
+                error: errorCallback,
+                success: successCallback
+            });
+        };
+
+
+        function CallAndPlot(){
+            pregunta_id = $( "#select_preguntas" ).val()
+            barrio = $( "#select_barrio" ).val()
+            comuna = $( "#select_comuna" ).val()
+            pull_base_id = $( "#pull_base_id" ).val()
+
+            token = $(`[name='csrfmiddlewaretoken']`).val()
+
+            data = {
+                "csrfmiddlewaretoken": token,
+                "question_id": pregunta_id,
+                "barrio_id": barrio,
+                "comuna_id": comuna,
+                "pull_base_id": pull_base_id
+            }
+            getEncuestasInfoByEncuestador(data, EncuestasInfoByEncuestadorSuccessCallback, EncuestasInfoByEncuestadorErrorCallback)
+
+        }
+        CallAndPlot()
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,391 @@
+
+body {
+    background-color: white;
+}
+
+@font-face {
+    font-family: 'poppins_font';
+    src: url("/static/fonts/PoppinsRegular.ttf");
+
+}
+
+.font_poppins {
+    font-family: 'poppins_font';
+}
+*{
+    font-family: 'poppins_font';
+}
+
+
+.list-group-modal {
+    max-height: 300px;
+    margin-bottom: 10px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.principal_color {
+    background-color: #337CCF !important;
+}
+
+.verde_color {
+    background-color: #3b933f !important;
+}
+
+.principal_dos_color {
+    background-color: #0047BA !important;
+}
+
+
+.secondary_color {
+    --bs-table-bg: #0080ff !important;
+}
+
+.secondary_color_text {
+    color: #808002 !important;
+}
+
+
+.third_color_text {
+    color: #0C356A;
+}
+
+.verde_color_text {
+    color: #2E4374;
+}
+
+.fcc-btn {
+    background-color: #2E4374 !important;
+
+    /*background-color: #0047BA;*/
+    /*transition: background-color 2s ease-out 100ms;*/
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+
+    padding: 50px 50px 50px 50px;
+    text-decoration: none;
+    vertical-align: middle;
+    border-radius: 10px;
+
+}
+
+
+.fcc-btn:hover {
+    background-color: #3b548e;
+    color: white;
+}
+
+.card_municipio {
+    font-size: 30px;
+    color: white;
+    background-color: #1450A3;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_municipio:hover {
+    background-color: #2361b9;
+    color: white;
+}
+
+.card_comuna {
+    font-size: 30px;
+    color: white;
+    background-color: #1450A3;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_comuna:hover {
+    background-color: #2361b9;
+    color: white;
+}
+
+.card_estrato {
+    font-size: 30px;
+    color: white;
+    background-color: #1450A3;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_estrato:hover {
+    background-color: #2361b9;
+    color: white;
+}
+
+.card_barrio {
+    font-size: 30px;
+    color: white;
+    background-color: #1450A3;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_barrio:hover {
+    background-color: #2361b9;
+    color: white;
+}
+
+.card_gender {
+    font-size: 30px;
+    color: white;
+    background-color: #1450A3;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_gender:hover {
+    background-color: #2361b9;
+    color: white;
+}
+
+.card_range_opt {
+    font-size: 30px;
+    color: white;
+    background-color: #1450A3;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_range_opt:hover {
+    background-color: #2361b9;
+    color: white;
+}
+
+.card_encuesta {
+    font-size: 30px;
+    color: white;
+    background-color: #1450A3;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    /*border-radius: 30px 80px;*/
+}
+
+.card_encuesta:hover {
+    background-color: #2361b9;
+    color: white;
+}
+
+.card_gray {
+
+    font-size: 30px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: #BDCDD6;
+    color: white;
+    /*border-bottom-left-radius: 80px;*/
+
+}
+
+.nav-link {
+    color: white;
+}
+
+.card_respuesta {
+    border-radius: 5px;
+    font-size: 45px;
+    color: white;
+    background-color: #659afd;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 100px;
+    padding-left: 20px;
+    flex-grow: 1; /* Hace que el texto ocupe todo el espacio restante vertical */
+    font-size: 1.5vw; /* Tamaño de fuente relativo al ancho de la ventana */
+
+}
+.card_respuesta_img {
+    border-radius: 5px;
+    color: white;
+    background-color: #659afd;
+    flex-grow: 1; /* Hace que el texto ocupe todo el espacio restante vertical */
+    font-size: 3.2vw; /* Tamaño de fuente relativo al ancho de la ventana */
+
+}
+
+
+/* Media query para dispositivos móviles basada en la resolución de pantalla */
+@media (max-width: 768px) {
+    .card_respuesta_img {
+        font-size: 4.5vw; /* Tamaño de fuente más grande para pantallas más pequeñas */
+    }
+}
+
+.card_respuesta:hover  {
+    background-color: #3287ff;
+}
+
+.respuesta_form:checked+label {
+        background-color: #071b40;
+
+}
+input[type=radio]{
+    opacity: 0;
+}
+.multi-question-radio {
+    opacity: 100 !important;
+    transform:scale(2);
+
+}
+
+#form_encuesta input[type=text]{
+      /*transform: scale(1, 1.5); !* Equal to scaleX(2) scaleY(0.5) *!*/
+    height: 70px;
+    font-size: 50px;
+}
+
+#form_encuesta input[type=number]{
+      /*transform: scale(1, 1.5); !* Equal to scaleX(2) scaleY(0.5) *!*/
+    height: 70px;
+    font-size: 50px;
+}
+
+.border-right {
+    border-right: 1px solid black;
+    /*height: 100%;*/
+    /*width: 0;*/
+}
+
+.card_pregunta {
+    border-radius: 25px;
+    font-size: 40px;
+    color: white;
+    background-color: #337CCF;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+.img-question {
+    height: 300px;
+    width: 300px;
+    border-radius: 10%;
+}
+
+.img-multi-question {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 50px;
+    width: 50px;
+    border-radius: 10%;
+}
+
+.breadcrumb-text {
+    font-size: 50px !important;
+      /*text-decoration: none; !* no underline *!*/
+
+}
+.breadcrumb-text a{
+    color: #2E4374;
+      text-decoration: none; /* no underline */
+
+}
+
+
+.count_ditribution {
+    font-size: 30px !important;
+}
+
+.font_grande{
+    font-size: 50px !important;
+
+}
+.form-check .img-choose {
+    /* margin-bottom: 20px; */
+    height: 200px;
+    width: 200px;
+    border-radius: 10%;
+}
+.progress-bar {
+    font-size: xx-large;
+    font-weight: bold;
+    background-color: #91C8E4;
+}
+
+.progress {
+    height: 50px;
+    border-radius: 0px 0px 0px 0px;
+    /*border-top-right-radius: 50px 50px;*/
+    /*border-top-left-radius: 20px 20px;*/
+}
+
+.contenedor-metricas {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10px; 
+    padding-right: 10px; 
+  }
+  
+  .texto-derecha {
+    text-align: right;
+    /* flex: 1; /* Esto hace que el texto ocupe todo el espacio disponible a la derecha */
+  }
+  
+  .texto-izquierda {
+    text-align: left;
+    /* flex: 1; /* Esto hace que el texto ocupe todo el espacio disponible a la izquierda */
+  }
+
+  .pop-round-faltantes {
+      width: 50px;
+      height: 50px;
+      background-color: #3498db;
+      top: 130px;
+      right: 10px;
+  }
+
+  .pop-round-faltantes-text {
+      font-size: 20px;
+      line-height: 50px;
+  }
+
+
+/* Contenedor del grid */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Mínimo 250px de ancho */
+    gap: 0.5vw; /* Espaciado entre los cards */
+}
+
+/* Estilos para cada card */
+.card {
+    /* background-color: #fff; */
+    /* padding: 20px; */
+    /* border-radius: 5px; */
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border: none !important; /* Elimina el borde */
+    box-shadow: none !important; /* Elimina la sombra */
+
+}
+
+/* Estilos para las imágenes dentro de los cards */
+#form_encuesta .card img {
+    margin-top: 15px;
+    max-width: 200px; /* Máximo 200px de ancho para las imágenes */
+    /*margin: 0 auto; /* Centra la imagen horizontalmente */
+    align-self: center; /* Centra la imagen verticalmente */
+}
+
+/* Estilos para el texto dentro de los cards */
+#form_encuesta .card p {
+    flex-grow: 1; /* Hace que el texto ocupe todo el espacio restante vertical */
+    font-size: 1.5vw; /* Tamaño de fuente relativo al ancho de la ventana */
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido del p */
+    justify-content: center; /* Centra horizontalmente el contenido del p */
+
+}
+
+
+#myDiv_super_visor_map {
+    width: 100%;
+    height: 100%;
+}

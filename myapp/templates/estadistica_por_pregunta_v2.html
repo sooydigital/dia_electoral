@@ -1,0 +1,201 @@
+{% extends "base.html" %} {% load permissions_tags %} {% load static %}
+
+{% block headcontent %}
+    <script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
+    <style type="text/css">
+    .bootstrap-select-custom {
+      width: 60% !important;
+    }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+        <a class="text-decoration-none" href="javascript:history.back()">
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+
+             Volver Atrás
+         </a>
+
+    <h1 class="text-center verde_color_text">
+
+        <i class="fa fa-area-chart" aria-hidden="true"></i>
+        ESTADÍSTICA POR ENCUESTA
+    </h1>
+    <br>
+    <br>
+    <input type="hidden" id="pull_base_id" value="{{ id }}">
+    <select  id="select_preguntas"  class="bootstrap-select-custom selectpicker" data-live-search="true">
+        {% for pregunta in preguntas %}
+            <option value={{ pregunta.id }}>{{ pregunta.label }}</option>
+        {% endfor %}
+    </select>
+
+    <select id="select_params"  class="selectpicker"  data-live-search="true">
+        <option value="all">Todo</option>
+        <option value="gender"> Genero</option>
+        <option value="range_age">Rango Edad</option>
+        <option value="estrato">Estrato</option>
+    </select>
+
+    <select  id="select_barrio"  class="selectpicker" data-live-search="true">
+        <option value="all">Todo</option>
+
+        {% for barrio in barrios %}
+            <option value={{ barrio.id }}>{{ barrio.name }}</option>
+        {% endfor %}
+    </select>
+
+    <select  id="select_comuna"  class="selectpicker" data-live-search="true">
+        <option value="all">Todo</option>
+
+        {% for comuna in comunas %}
+            <option value={{ comuna.id }}>{{ comuna.name }}</option>
+        {% endfor %}
+    </select>
+
+
+    <h2 id="title_pregunta">
+    </h2>
+
+
+
+    <input type="hidden" value="46" id="pregunta_id">
+    {% csrf_token %}
+    <div id='chart_pregunta_bar'><!-- Plotly chart will be drawn inside this DIV --></div>
+    <div id='tabla_pregunta'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+{% endblock %}
+
+
+{% block scriptcontent %}
+    <script>
+        $(document).ready(function(e) {
+            $( "#select_preguntas" ).change(function() {
+              CallAndPlot();
+            });
+
+            $( "#select_params" ).change(function() {
+              CallAndPlot();
+            });
+
+            $( "#select_barrio" ).change(function() {
+              CallAndPlot();
+            });
+
+            $( "#select_comuna" ).change(function() {
+              CallAndPlot();
+            });
+        });
+
+        function pintarChart(response) {
+            console.log('data', response.data)
+            layout= {
+                "barmode": "group"
+            }
+
+            Plotly.newPlot('chart_pregunta_bar', {
+              data: response.data,
+              layout: response.layout
+            });
+        }
+
+        function pintarTabla(tabla){
+            console.log('tabla', tabla)
+            var content = "<table class='table table-bordered text-center  '>"
+
+            for (var i = 0; i < tabla.length; i++) {
+                content += '<tr>'
+                for (var j = 0; j < tabla[i].length; j++) {
+                    content += '<td>' + tabla[i][j] + '</td>';
+                }
+                content += '</tr>'
+            }
+
+
+            content += "</table>"
+
+            $('#tabla_pregunta').html(content);
+
+        }
+
+        function EncuestasInfoByEncuestadorSuccessCallback(data) {
+            console.log(data)
+            pintarChart(data.data)
+            pintarTabla(data.data.tabla)
+        }
+
+        function EncuestasInfoByEncuestadorErrorCallback() {
+            console.log('barriosErrorCallback, error trayendo la info de preguntas ')
+
+        }
+
+        var getEncuestasInfoByEncuestador = (data, successCallback, errorCallback,) => {
+            var url = `/api/chart_values/`
+            $.ajax({
+                type: 'POST',
+                url,
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data),
+
+                dataType : 'json',
+                error: errorCallback,
+                success: successCallback
+            });
+        };
+
+
+
+        function CallAndPlot(){
+            pregunta_id = $( "#select_preguntas" ).val()
+            param = $( "#select_params" ).val()
+            barrio = $( "#select_barrio" ).val()
+            comuna = $( "#select_comuna" ).val()
+            pull_base_id = $( "#pull_base_id" ).val()
+
+            token = $(`[name='csrfmiddlewaretoken']`).val()
+
+            data = {
+                "csrfmiddlewaretoken": token,
+                "question_id": pregunta_id,
+                "params": param,
+                "barrio_id": barrio,
+                "comuna_id": comuna,
+                "pull_base_id": pull_base_id
+            }
+            getEncuestasInfoByEncuestador(data, EncuestasInfoByEncuestadorSuccessCallback, EncuestasInfoByEncuestadorErrorCallback)
+
+        }
+        CallAndPlot()
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+{% endblock %}

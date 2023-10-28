@@ -1,0 +1,149 @@
+{% extends "base.html" %} {% load permissions_tags %} {% load static %}
+
+{% block headcontent %}
+    <script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4 text-center">{{ encuestador.name }}</h1>
+
+        <hr class="my-4">
+
+        <div class="container  text-center">
+            <div class="row">
+                <div class="col">
+                    <i class="fa fa-tachometer fa-5x" aria-hidden="true"></i>
+                </div>
+                <div class="col">
+                    <i class="fa fa-calendar fa-5x" aria-hidden="true"></i>
+                </div>
+                <div class="col">
+                    <i class="fa fa-bookmark fa-5x" aria-hidden="true"></i>
+                </div>
+                <div class="col">
+                    <i class="fa fa-clock-o fa-5x" aria-hidden="true"></i>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col fa-3x">
+                    {{ encuestador.num_encuestas_total }}
+                </div>
+                <div class="col fa-3x">
+                    {{ encuestador.num_encuestas_mes }}
+                </div>
+                <div class="col fa-3x">
+                    {{ encuestador.num_encuestas_semana }}
+                </div>
+                <div class="col fa-3x">
+                    {{ encuestador.num_encuestas_hoy }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col fa-2x">
+                    Total
+                </div>
+                <div class="col fa-2x">
+                    Mes
+                </div>
+                <div class="col fa-2x">
+                    Semana
+                </div>
+                <div class="col fa-2x">
+                    Hoy
+                </div>
+            </div>
+        </div>
+        <hr class="my-4">
+
+    </div>
+
+    <div id='myDivMap'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+
+
+
+{% endblock %}
+
+
+{% block scriptcontent %}
+    <script type="text/javascript">
+
+        function pintarMapa(data) {
+
+            var rows_text = []
+            var rows_lon = []
+            var rows_lat = []
+            data.map(punto => {
+                rows_text.push(punto.id)
+                rows_lon.push(punto.longitude)
+                rows_lat.push(punto.latitude)
+            })
+
+            var data_map = [
+                {
+                    type: "scattermapbox",
+                    text: rows_text,
+                    lon: rows_lon,
+                    lat: rows_lat,
+                    marker: {color: "black", size: 8}
+                }
+            ];
+
+            var layout = {
+                "title": "Encuestas Realizadas",
+                "height": 660,
+                "legend": {"x": 0, "y": 1},
+                "mapbox": {"zoom": 11, "center": {"lat": 7.070479, "lon": -73.106224}},
+                "margin": {"b": 40, "l": 40, "r": 40, "t": 40}
+            }
+            var config = {
+                "mapboxAccessToken": "pk.eyJ1IjoiY2hyaWRkeXAiLCJhIjoiY2lxMnVvdm5iMDA4dnhsbTQ5aHJzcGs0MyJ9.X9o_rzNLNesDxdra4neC_A"
+            }
+
+            Plotly.newPlot("myDivMap", data_map, layout, config = config);
+
+
+            var myPlot = document.getElementById('myDivMap')
+
+            myPlot.on('plotly_click', function(data){
+                point = data.points[0].text
+                url = {% url 'app:encuesta_detail' %} + point
+                window.open(
+                    url
+                )
+            });
+
+
+        }
+
+        function EncuestasInfoByEncuestadorSuccessCallback(data) {
+            pintarMapa(data.data)
+        }
+
+        function EncuestasInfoByEncuestadorErrorCallback() {
+            console.log('barriosErrorCallback, error trayendo la info de  EncuestasInfoByEncuestador ')
+
+        }
+
+
+        var getEncuestasInfoByEncuestador = (id, successCallback, errorCallback,) => {
+            var url = `/api/get_all_encuestas_by_encuestador/${id}`
+            $.ajax({
+                type: 'GET',
+                url,
+                error: errorCallback,
+                success: successCallback
+            });
+        };
+
+        getEncuestasInfoByEncuestador({{ encuestador.id }}, EncuestasInfoByEncuestadorSuccessCallback, EncuestasInfoByEncuestadorErrorCallback)
+    </script>
+
+
+{% endblock %}

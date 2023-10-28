@@ -1,0 +1,24 @@
+ {% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block content %}
+    <br><br>
+<div class="row">
+                {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ENTREVISTADOR' %}
+
+  <div class="d-flex justify-content-center align-items-center">
+    <a href="{% url 'app:new_encuesta' %}" class="fcc-btn text-center font_poppins ">
+        <i class="fa fa-plus fa-2x" aria-hidden="true"></i><br>
+        Encuestar
+    </a>
+    </div>
+{% endif %}
+
+</div>
+    <br><br><br><br>
+    <div class="row">
+        <div class="d-flex align-items-center mb-3 pb-1">
+                                        <img class="mx-auto d-block" src="{% static 'img/logo.png' %}" height="100"
+                                             alt="logo">
+                                    </div>
+    </div>
+{% endblock %}

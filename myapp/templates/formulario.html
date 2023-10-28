@@ -1,0 +1,364 @@
+{% extends 'base.html' %} {% load permissions_tags %}
+{% block headcontent %}
+    <!-- JQUERY-->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- INPUT MASK-->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.3/jquery.inputmask.bundle.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% include "breadcrumb.html" %}
+
+    <h1>
+        Encuesta
+    </h1>
+    <p id="demo"></p>
+
+    <form id="form_encuesta" method="post" action="">
+        <div class="form-group">
+            {% csrf_token %}
+
+            {% for question in questions %}
+                <div>
+                    <br>
+                    {% if question.type == 'phone' %}
+                        <div class="card_pregunta" id="question_{{ question.id }}"`>
+                            {{ forloop.counter }} - {{ question.label }}
+                        </div>
+                        <div class="alert alert-danger" hidden>
+                            Ingrese un valor valido
+                        </div>
+                         <br>
+                        <input class="form-control numeric" type="text"   name={{ question.id }} data-masked="" data-inputmask="'mask': '(999) 999-9999'" placeholder="Phone number">
+                        <br><br>
+                    {% elif question.type == 'number' %}
+                        <div class="card_pregunta" id="question_{{ question.id }}"`>
+                            {{ forloop.counter }} - {{ question.label }}
+                        </div>
+                        <div class="alert alert-danger" hidden>
+                            Ingrese un valor valido
+                        </div>
+                         <br>
+                        <input required type="number" class="form-control" name={{ question.id }}>
+                        <br><br>
+                    {% elif question.type == 'multi' %}
+                        <div class="card_pregunta" id="question_{{ question.id }}"`>
+                            {{ forloop.counter }} - {{ question.label }}
+                        </div>
+                        <div class="alert alert-danger" hidden>
+                            Ingrese un valor valido
+                        </div>
+                         <br>
+                            <div class="row">
+                                <div class="col col-sm-4">
+                                    Persona
+                                </div>
+                                <div class="col col-sm-3 border-right">
+                                    {{ question.questions.0.question_1.label|cleanTextV2 }}
+                                </div>
+                                <div class="col col-sm-5">
+                                    {{ question.questions.0.question_2.label|cleanTextV2 }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-sm-4">
+                                </div>
+                                <div class="col col-sm-3 border-right">
+                                    <div class="row">
+                                        {% for choose in question.choose %}
+                                            <div class="col col-sm d-flex justify-content-center">
+                                                {{ choose.1 }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% if question.questions.0.question_2 %}
+                                    <div class="col col-sm-5">
+                                        <div class="row">
+                                            {% for choose in question.choose_2 %}
+                                                <div class="col col-sm d-flex justify-content-center">
+                                                    {{ choose.1 }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        <br>
+                        {% for q in question.questions %}
+                            <div class="row">
+                                <div class="col col-sm-4">
+                                    <div class="d-inline-block">
+                                        {% if q.question_1.picture %}
+                                            <img class="img-multi-question" src="{{ q.question_1.picture.url }}">
+                                            {% else %}
+                                            <img class="img-multi-question" src="">
+                                        {% endif %}
+                                        {{ q.question_1.label|cleanText }}
+                                    </div>
+
+                                </div>
+                                <div class="col col-sm-3 border-right">
+                                    <div class="row">
+                                        {% for choose in question.choose %}
+                                            <div class="col col-sm d-flex justify-content-center">
+                                                <input
+                                                        class='multi-question-radio'
+                                                        type="radio"
+                                                        id="radio_{{ question.id }}_{{ forloop.counter }}"
+                                                        name="multi_{{ question.id }}_{{ q.question_1.id }}"
+                                                        value={{ choose.1 }}
+                                                        checked
+                                                >
+                                            </div>
+
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                                {% if q.question_2 %}
+                                    <div class="col col-sm-5">
+                                        <div class="row">
+                                            {% for choose in question.choose_2 %}
+                                                <div class="col col-sm d-flex justify-content-center">
+                                                    <input
+                                                            class='multi-question-radio'
+                                                            type="radio"
+                                                            id="radio_{{ question.id }}_{{ forloop.counter }}"
+                                                            name="multi_{{ question.id }}_{{ q.question_2.id }}"
+                                                            value={{ choose.1 }}
+                                                            checked
+                                                    >
+                                                </div>
+                                            {% endfor %}
+
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                        {% endfor %}
+
+                        <br><br>
+                    {% else %}
+
+                        <div class="card_pregunta" id="question_{{ question.id }}"`>
+                            {{ forloop.counter }} - {{ question.label }}
+                        </div>
+                        <div class="alert alert-danger" hidden>
+                            Ingrese un valor valido
+                        </div>
+
+                        {% if question.choose %}
+                            {% if question.picture %}
+                                <div class="d-flex">
+                                        <div class="d-inline-block">
+                                            <img class="img-question" src="{{ question.picture }}">
+                                        </div>
+                                        <div class="d-inline-block">
+
+                                        {% for choose in question.choose %}
+                                            <br>
+                                            <div class="form-check">
+                                                <input
+                                                        required
+                                                        title="Debe completar esta pregunta"
+                                                        class="form-check-input respuesta_form"
+                                                        type="radio"
+                                                        name="{{ question.id }}"
+                                                        id="{{ question.id }}_{{ forloop.counter }}_{{ choose.label }}" value="{{ choose.label }}"
+                                                >
+                                                <label class="form-check-label card_respuesta"
+                                                    for="{{ question.id }}_{{ forloop.counter }}_{{ choose.label }}">
+                                                    {{ choose.label | title}}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% else %}
+                        
+                        <div class="grid-container">
+
+                        {% for choose in question.choose %}
+                            {% if choose.picture %}
+                            <div class="form-check question-choose card">
+
+                                <input
+                                        required
+                                        title="Debe completar esta pregunta"
+                                        class="form-check-input respuesta_form"
+                                        type="radio"
+                                        name="{{ question.id }}"
+                                        id="{{ question.id }}_{{ forloop.counter }}_{{ choose.label }}" value="{{ choose.label }}"
+                                >
+                                <label class="form-check-label card_respuesta_img"
+                                       for="{{ question.id }}_{{ forloop.counter }}_{{ choose.label }}">
+                                        {% if choose.picture %}
+                                            <img class="img-choose" src="{{ choose.picture }}">
+                                            <br>
+                                        {% endif %}
+                                    {{ choose.label | title}}
+                                </label>
+                            </div>
+                            {% else %}
+                            <div class="form-check question-choose">
+                                <input
+                                        required
+                                        title="Debe completar esta pregunta"
+                                        class="form-check-input respuesta_form"
+                                        type="radio"
+                                        name="{{ question.id }}"
+                                        id="{{ question.id }}_{{ forloop.counter }}_{{ choose.label }}" value="{{ choose.label }}"
+                                >
+                                <label class="form-check-label card_respuesta"
+                                       for="{{ question.id }}_{{ forloop.counter }}_{{ choose.label }}">
+                                    {{ choose.label | title}}
+                                </label>
+                            </div>
+
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+
+                            {% endif %}
+
+                        {% else %}
+                            <br>
+                            <input required type="text" class="form-control" name={{ question.id }}>
+                            <br><br>
+                        {% endif %}
+                    {% endif %}
+                    <br>
+
+                </div>
+
+            {% endfor %}
+
+            <input type="hidden" id="longitude" name='longitude' }>
+            <input type="hidden" id="latitude" name='latitude' }>
+            <br>
+            <div class="d-flex justify-content-center">
+                <button
+                        id = "btn_enviar"
+                        type="submit"
+                        {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR' %}
+                                                disabled
+                        {% endif %}
+                        class="btn btn-success fcc-btn text-center font_poppins">
+                    Enviar Encuesta
+                </button>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+
+
+    </form>
+
+    <script>
+    $(document).ready(function(){
+      $(":input").inputmask();
+    });
+        var x = document.getElementById("demo");
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            document.getElementById("latitude").value = position.coords.latitude
+            document.getElementById("longitude").value = position.coords.longitude
+
+        }
+
+        getLocation();
+
+        function showMessageErrorInput(){
+
+        }
+
+        function validateForm(){
+            var onlyInputs = document.querySelectorAll(
+              '#form_encuesta input[type="text"]'
+            );
+            {#console.log('onlyInputs', onlyInputs)#}
+            empty_inputs = []
+            onlyInputs.forEach(input => {
+                console.log('input.value', input.value)
+                if (['undefined', ''].includes(input.value)) {
+                    empty_inputs.push(input)
+                }
+            });
+
+            console.log('empty_inputs', empty_inputs)
+
+            empty_inputs.forEach(input => {
+                message = input.parentElement.querySelector('.alert-danger')
+                message.removeAttribute("hidden");
+                }
+            )
+            var validar_respuestas = validarRespuestas()
+            if (validar_respuestas) {
+                document.getElementById("btn_enviar").disabled=true
+                document.getElementById("form_encuesta").submit()
+            }
+        }
+        function validarRespuestas() {
+            const form = document.getElementById("form_encuesta");
+            const preguntas = form.getElementsByClassName("question-choose");
+            let todasLasPreguntasRespondidas = true;
+
+            for (let i = 0; i < preguntas.length; i++) {
+                const radios = preguntas[i].querySelectorAll('input[type="radio"]');
+                let alMenosUnoSeleccionado = false;
+                let j
+                for (j = 0; j < radios.length; j++) {
+                    if (radios[j].checked) {
+                        alMenosUnoSeleccionado = true;
+                        // message = preguntas[j].parentElement.querySelector('.alert-danger')
+                        // message.setAttribute("hidden", "true");
+
+                        break;
+                    }
+                   
+                }
+
+
+                if (!alMenosUnoSeleccionado) {
+                todasLasPreguntasRespondidas = false;
+                // console.log('i', i, "j", j)
+                // message = radios[j].parentElement.querySelector('.alert-danger')
+                // message.removeAttribute("hidden");
+
+                break;
+                }
+            }
+
+            if (todasLasPreguntasRespondidas) {
+                console.log("Todas las preguntas han sido respondidas.");
+                return true
+                // Realiza cualquier otra acción necesaria aquí
+            } else {
+                console.log("Por favor, responde todas las preguntas.");
+                return false
+                // Puedes mostrar un mensaje de error o tomar otra acción aquí
+            }
+        }
+
+
+
+        document.getElementById("btn_enviar").addEventListener("click", function(event){
+            {#event.preventDefault()#}
+            validateForm()
+        });
+
+    </script>
+{% endblock %}

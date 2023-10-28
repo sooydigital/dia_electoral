@@ -1,0 +1,189 @@
+{% extends "base.html" %} {% load permissions_tags %} {% load static %}
+
+{% block headcontent %}
+    <script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+{% endblock %}
+
+
+{% block content %}
+    <a class="text-decoration-none" href="javascript:history.back()">
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+
+             Volver Atrás
+         </a>
+    <h1 class="third_color_text text-center">
+        <i class="fa fa-users" aria-hidden="true"></i>
+
+        ESTADÍSTICAS POR GRUPOS </h1>
+    <br>
+    <input type="hidden" id="pull_base_id" value="{{ id }}">
+
+    {% if encuestadores %}
+
+        <table class="table text-center">
+            <thead class="thead-dark principal_color text-white">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombr Grupo</th>
+                <th scope="col">Info Lider </th>
+                <th scope="col">Nombre </th>
+                <th scope="col">Numero de Encuestas Realizadas</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for encuestador in encuestadores %}
+                <tr>
+                    <th scope="row">
+                        <span class="secondary_color_text font-weight-bold">{{ forloop.counter }}</span>
+                    </th>
+                    <td>  {{ encuestador.group_name }}</td>
+                    <td>  {{ encuestador.group_lider }} - {{ encuestador.group_phone }}</td>
+                    <td>
+                        <a class="text-decoration-none"
+                           href="{% url 'app:estadistica_por_encuestador' encuestador.id %}">
+                            {{ encuestador.name }}
+                        </a>
+                    </td>
+                    <td>  {{ encuestador.encuestas_llenadas }}</td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <th scope="row">
+                    </th>
+                    <td>
+                         TOTAL
+                    </td>
+                    <td> {{ total }} </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    {% endif %}
+      <div class="container">
+            <div id='myDiv_super_visor_bar'><!-- Plotly chart will be drawn inside this DIV --></div>
+            <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
+      </div>
+
+{% endblock %}
+
+
+{% block scriptcontent %}
+    <script type="text/javascript">
+        sessionStorage.setItem('encuestadores', JSON.stringify({{ encuestadores|to_js }}));
+    </script>
+
+    <script type="text/javascript">
+
+        var encuestadores = JSON.parse(sessionStorage.getItem('encuestadores'));
+        console.log('encuestadores', encuestadores)
+
+        var data_bar = []
+        var values = []
+        var labels = []
+
+        encuestadores.map(encuestador => {
+            data_bar.push(
+                {
+                    x: [encuestador.name],
+                    y: [encuestador.encuestas_llenadas],
+                    name: encuestador.name,
+                    type: 'bar'
+                }
+            )
+            values.push(encuestador.encuestas_llenadas)
+            labels.push(encuestador.name)
+        })
+
+        var layout = {
+            title: 'Encuestas realizadas',
+            barmode: 'group',
+            xaxis: {
+                tickangle: -20,
+                showticklabels: true,
+            },
+            yaxis: {
+                zeroline: true,
+            },
+            bargap: 0.1
+        };
+
+        Plotly.newPlot("myDiv_super_visor_bar", data_bar, layout);
+
+
+    </script>
+
+    <script type="text/javascript">
+
+        function pintarMapa(data) {
+            console.log('pintare un mapa', data)
+            var data_map = []
+            for (const [name, value] of Object.entries(data)) {
+                data_map.push({
+                    name: name,
+                    type: "scattermapbox",
+                    lon: value.lon,
+                    lat: value.lat,
+                    text: value.id,
+                    marker: {
+                        size: 10,
+                        opacity: 0.9
+
+                    },
+                })
+            }
+
+            var layout = {
+                "title": "",
+                "height": 800,
+                "legend": {"x": 0, "y": 1},
+                "mapbox": {"zoom": 11, "center": {"lat": 7.070479, "lon": -73.106224}},
+                "margin": {"b": 40, "l": 40, "r": 40, "t": 40}
+            }
+            var config = {
+                "mapboxAccessToken": "pk.eyJ1IjoiY2hyaWRkeXAiLCJhIjoiY2lxMnVvdm5iMDA4dnhsbTQ5aHJzcGs0MyJ9.X9o_rzNLNesDxdra4neC_A"
+            }
+
+            Plotly.newPlot("myDiv_super_visor_map", data_map, layout, config = config);
+
+
+            var myPlot = document.getElementById('myDiv_super_visor_map')
+
+            myPlot.on('plotly_click', function (data) {
+                point = data.points[0].text
+                url = {% url 'app:encuesta_detail' %} +point
+                window.open(
+                    url
+                )
+            });
+
+        }
+
+        function EncuestasInfoByEncuestadorSuccessCallback(data) {
+            pintarMapa(data.data)
+        }
+
+        function EncuestasInfoByEncuestadorErrorCallback() {
+            console.log('barriosErrorCallback, error trayendo la info de  EncuestasInfoByEncuestador ')
+
+        }
+
+        var getEncuestasInfoByEncuestador = (successCallback, errorCallback,) => {
+
+            pull_base_id = $( "#pull_base_id" ).val()
+            var url = `/api/${pull_base_id}/get_all_locations_by_encuestadores_by_pull_base/`
+            $.ajax({
+                type: 'GET',
+                url,
+                error: errorCallback,
+                success: successCallback
+            });
+        };
+
+        getEncuestasInfoByEncuestador(EncuestasInfoByEncuestadorSuccessCallback, EncuestasInfoByEncuestadorErrorCallback)
+    </script>
+
+{% endblock %}

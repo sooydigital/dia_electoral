@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% load permissions_tags %} {% load static %}
+
+{% block headcontent %}
+    <script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
+    <style type="text/css">
+    .bootstrap-select-custom {
+      width: 60% !important;
+    }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+    <h1 class="text-center verde_color_text">
+
+        <i class="fa fa-download" aria-hidden="true"></i>
+        DESCARGA POR ENCUESTA
+    </h1>
+    {% for pull_base in pull_base_list %}
+        <div class="col-md-12">
+            <div class="card mb-4 box-shadow">
+                <a class="text-decoration-none"
+                   href="{% url 'app:descarga_by_base' id=pull_base.id %}">
+                    <div class="card-body text-center card_encuesta">
+                        {{ pull_base.name }}
+                    </div>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+

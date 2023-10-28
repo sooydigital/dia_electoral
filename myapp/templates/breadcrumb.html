@@ -1,0 +1,90 @@
+{% load permissions_tags %} {% load static %}
+
+<nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% if id %}
+                    <li class="breadcrumb-text breadcrumb-item">
+                        <a href="{% url 'app:new_encuesta' %}">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            Inicio
+                        </a>
+                    </li>
+                    {% if municipio %}
+                        <li class="breadcrumb-text breadcrumb-item">
+                            <a href="{% url 'app:new_encuesta' id=id %}">
+                                {{ id }}
+                            </a>
+                        </li>
+                        {% if comuna %}
+                            <li class="breadcrumb-text breadcrumb-item" aria-current="page">
+                                <a href="{% url 'app:new_encuesta' id=id municipio=municipio %}">
+                                    {{ municipio | upper }}
+                                </a>
+                            </li>
+                            {% if estrato %}
+                                <li class="breadcrumb-text breadcrumb-item" aria-current="page">
+                                    <a href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna %}">
+                                        {{ comuna | upper }}
+                                    </a>
+                                </li>
+                                {% if barrio %}
+                                    <li class="breadcrumb-text breadcrumb-item" aria-current="page">
+                                        <a href="{% url 'app:new_encuesta' id=id  municipio=municipio comuna=comuna estrato=estrato%}">
+                                            {{ estrato }}
+                                        </a>
+                                    </li>
+                                    {% if gender %}
+                                        <li class="breadcrumb-text breadcrumb-item" aria-current="page">
+                                            <a href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna estrato=estrato barrio=barrio %}">
+                                                {{ barrio | upper }}
+                                            </a>
+                                        </li>
+                                        {% if range_age %}
+                                            <li class="breadcrumb-text breadcrumb-item" aria-current="page">
+                                                <a href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna estrato=estrato barrio=barrio gender=gender %}">
+                                                    {{ gender | upper }}
+                                                </a>
+                                            </li>
+                                            <li class="breadcrumb-text breadcrumb-item active" aria-current="page">
+                                                {{ range_age | upper }}
+                                            </li>
+                                        {% else %}
+                                            <li class="breadcrumb-text breadcrumb-item active" aria-current="page">
+                                                {{ gender | upper }}
+                                            </li>
+                                        {% endif %}
+                                    {% else %}
+                                        <li class="breadcrumb-text breadcrumb-item active" aria-current="page">
+                                            {{ barrio | upper }}
+                                        </li>
+                                    {% endif %}
+                                {% else %}
+                                    <li class="breadcrumb-text breadcrumb-item active" aria-current="page">
+                                        {{ estrato | upper }}
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                <li class="breadcrumb-text breadcrumb-item active" aria-current="page">
+                                        {{ comuna | upper }}
+                                    </li>
+                            {% endif %}
+                        {% else %}
+                            <li class="breadcrumb-text breadcrumb-item active" aria-current="page">
+                                {{ municipio | upper }}
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li class="breadcrumb-text breadcrumb-item active">
+                            {{ id }}
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li class="breadcrumb-text breadcrumb-item active">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        Inicio
+                    </li>
+                {% endif %}
+
+            </ol>
+        </nav>
+

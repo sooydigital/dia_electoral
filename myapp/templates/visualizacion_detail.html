@@ -1,0 +1,81 @@
+{% extends "base.html" %} {% load permissions_tags %} {% load static %}
+
+{% block headcontent %}
+	<script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+        <h1 class="third_color_text text-center">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+
+        VISUALIZACIÓN por barrios </h1>
+    <br>
+
+
+
+	<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+    <br>
+
+
+
+{% endblock %}
+
+{% block scriptcontent %}
+    <script type="text/javascript" >
+            sessionStorage.setItem('puntos',  JSON.stringify({{ puntos|to_js }}));
+    </script>
+
+    <script type="text/javascript" >
+
+        var puntos = JSON.parse(sessionStorage.getItem('puntos'));
+        console.log('puntos', puntos)
+
+        var rows_text = []
+        var rows_lon = []
+        var rows_lat = []
+        var symbols = []
+        puntos.map(punto => {
+            rows_text.push(punto.tex)
+            rows_lon.push(punto.longitude)
+            rows_lat.push(punto.latitude)
+            symbols.push('marker')
+        })
+
+        var data = [
+			{
+		        type: "scattermapbox",
+				text: rows_text,
+				lon: rows_lon,
+				lat: rows_lat,
+		        {#marker: { size: 5, symbol: 'marker' },#}
+		        marker: { size: 10, color: 'black' },
+
+			}
+		];
+
+		var layout = {
+			dragmode: "zoom",
+			mapbox: { center: { lat: 7.0724022, lon: -73.1102081 }, zoom: 11 },
+			margin: { r: 0, t: 0, b: 0, l: 0 }
+		};
+        var config = {
+            "mapboxAccessToken": "pk.eyJ1IjoiY2hyaWRkeXAiLCJhIjoiY2lxMnVvdm5iMDA4dnhsbTQ5aHJzcGs0MyJ9.X9o_rzNLNesDxdra4neC_A"
+        }
+		Plotly.newPlot("myDiv", data, layout, config);
+
+
+        var myPlot = document.getElementById('myDiv')
+
+            myPlot.on('plotly_click', function(data){
+                point = data.points[0].text
+                url = {% url 'app:encuesta_detail' %} + point
+                window.open(
+                    url
+                )
+            });
+
+    </script>
+{% endblock %}

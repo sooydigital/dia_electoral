@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% load permissions_tags %} {% load static %}
+
+
+
+{% block content %}
+    <h1 class="text-center verde_color_text">
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+        ESTADÍSTICA POR MAPA
+    </h1>
+    {% for pull_base in pull_base_list %}
+        <div class="col-md-12">
+            <div class="card mb-4 box-shadow">
+                <a class="text-decoration-none"
+                   href="{% url 'app:estadistica_por_mapa_pollbase' id=pull_base.id %}">
+                    <div class="card-body text-center card_encuesta">
+                        {{ pull_base.name }}
+                    </div>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+

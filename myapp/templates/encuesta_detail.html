@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block headcontent %}
+	<script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% include "breadcrumb.html" %}
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4 text-center">{{ encuesta.interviewer.first_name }} {{ encuesta.interviewer.last_name }}</h1>
+
+            <hr class="my-4">
+
+            <div class="container  text-center">
+                <div class="row">
+
+                    <div class="col">
+                        <i class="fa fa-calendar fa-5x" aria-hidden="true"></i>
+                        <div class="fa-3x">
+                            {{ encuesta.created_at |date:"Y-m-d" }}
+                        </div>
+                    </div>
+
+
+                    <div class="col">
+                        <i class="fa fa-clock-o fa-5x" aria-hidden="true"></i>
+                        <div class="fa-3x">
+                            {{ encuesta.created_at |date:"h:i A" }}
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <hr class="my-4">
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card mb-4 box-shadow">
+
+                    <div class="card-body text-center  card_municipio">
+                        {{ encuesta.municipio.name }}
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card mb-4 box-shadow">
+
+                    <div class="card-body text-center  card_comuna">
+                        {{ encuesta.barrio.comuna.name }}
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card mb-4 box-shadow">
+
+                    <div class="card-body text-center card_barrio">
+                        {{ encuesta.barrio.name }}
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="card mb-4 box-shadow">
+
+                    <div class="card-body text-center card_gender">
+                        {{ encuesta.gender }}
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="card mb-4 box-shadow">
+
+                    <div class="card-body text-center card_range_opt">
+                        {{ encuesta.range_age }}
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+        <hr class="my-4">
+    	<div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+    </div>
+
+{% endblock %}
+
+{% block scriptcontent %}
+        <script type="text/javascript" >
+
+        var puntos = JSON.parse(sessionStorage.getItem('puntos'));
+        console.log('puntos', puntos)
+
+        var rows_lon = [{{ encuesta.longitude }}]
+        var rows_lat = [{{ encuesta.latitude }}]
+
+
+        var data = [
+			{
+		        type: "scattermapbox",
+				lon: rows_lon,
+				lat: rows_lat,
+		        marker: { size: 10, color: 'black' },
+
+			}
+		];
+
+		var layout = {
+			dragmode: "zoom",
+			mapbox: { center: { lat: 7.0724022, lon: -73.1102081 }, zoom: 11 },
+			margin: { r: 0, t: 0, b: 0, l: 0 }
+		};
+        var config = {
+            "mapboxAccessToken": "pk.eyJ1IjoiY2hyaWRkeXAiLCJhIjoiY2lxMnVvdm5iMDA4dnhsbTQ5aHJzcGs0MyJ9.X9o_rzNLNesDxdra4neC_A"
+        }
+		Plotly.newPlot("myDiv", data, layout, config);
+
+
+    </script>
+
+{% endblock %}

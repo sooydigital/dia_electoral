@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% load permissions_tags %} {% load static %}
+
+
+
+{% block content %}
+    <h1 class="text-center verde_color_text">
+        <i class="fa fa-tasks" aria-hidden="true"></i>
+        Cuadros comparativos
+    </h1>
+
+            <table class="table">
+            <thead class="thead-dark principal_color text-white">
+            <tr>
+                <th scope="col"> #</th>
+                <th scope="col">Nombre Encuesta</th>
+                <th scope="col">Lugares</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                {% for pull_base in pull_base_list %}
+                <tr>
+                    <th scope="row"><span class="secondary_color_text font-weight-bold">{{ forloop.counter }}</span>
+                    </th>
+                    <td>
+                        <a class="text-decoration-none"
+                           href="{% url 'app:estadistica_por_pregunta_pollbase' id=pull_base.id %}">
+                                {{ pull_base.name }}
+                        </a>
+                    </td>
+                    <td>
+
+                    <a href="{% url 'app:cuadro_comparativo_barrios' id=pull_base.id %}" class="text-decoration-none fa-stack fa-2x">
+                        <i class="fa fa-tag fa-stack-1x" style="top: 8px; "aria-hidden="true"></i>
+                        <i class="fa fa-file-o fa-stack-2x"></i>
+                    </a>
+
+                    <a href="{% url 'app:cuadro_comparativo_comunas' id=pull_base.id %}" class="text-decoration-none fa-stack fa-2x">
+                        <i class="fa fa-tags fa-stack-1x" style="top: 8px;" aria-hidden="true"></i>
+                        <i class="fa fa-file-o fa-stack-2x"></i>
+                    </a>
+
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+{% endblock %}
+
+

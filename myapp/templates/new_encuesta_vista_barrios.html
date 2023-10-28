@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load permissions_tags %}
+{% block content %}
+    {% include "breadcrumb.html" %}
+
+    <div class="container">
+
+        <div class="row">
+
+            {% for comuna in comuna_list %}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        {% if comuna.total_entregadas <= comuna.total_distribuciones%}
+                            <div class="progress">
+                                <div
+                                    class="progress-bar "
+                                    role="progressbar"
+                                    style="width: {{ comuna.total_entregadas|get_percentage:comuna.total_distribuciones }}%;"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100">
+                                    {{ comuna.total_entregadas|get_percentage:comuna.total_distribuciones }}%
+                                </div>
+                            </div>
+                            <a class="text-decoration-none"
+                               href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna.slug %}">
+                                <div class="card-body text-center  card_comuna">
+                                    {{ comuna.name }}
+                                </div>
+                                <div class="text-center">
+                                    <small class="count_ditribution text-muted font_grande">
+                                        {{ comuna.total_entregadas }}
+                                        / {{ comuna.total_distribuciones }}</small>
+                                </div>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% for barrio in barrio_list %}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="progress">
+                            <div 
+                                class="progress-bar " 
+                                role="progressbar" 
+                                style="width: {{ barrio.total_entregadas|get_percentage:barrio.total_distribuciones }}%;" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                {{ barrio.total_entregadas|get_percentage:barrio.total_distribuciones }}%
+                            </div>
+                        </div>
+                        {% if barrio.total_faltantes > 0 %}
+
+                            <a class="text-decoration-none"
+                               href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna estrato=estrato barrio=barrio.slug %}">
+                                <div class="card-body text-center card_barrio">
+                                    {{ barrio.name }}
+                                </div>
+                                <div class="text-center">
+                                    <small class="count_ditribution text-muted font_grande">{{ barrio.total_entregadas }}
+                                        / {{ barrio.total_distribuciones }}</small>
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="card-body text-center card_gray">
+                                {{ barrio.name }}
+                            </div>
+                            <div class="text-center">
+                                <small class="count_ditribution text-muted font_grande">{{ barrio.total_entregadas }}
+                                    / {{ barrio.total_distribuciones }}</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+{% endblock %}

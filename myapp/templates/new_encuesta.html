@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+{% load permissions_tags %}
+{% block content %}
+    {% include "breadcrumb.html" %}
+
+    <div class="container">
+
+        <div class="row">
+            {% for encuesta_base in encuestas_base %}
+
+                <div class="col-md-12">
+                    <div class="card mb-4 box-shadow">
+                        <a class="text-decoration-none"
+                           href="{% url 'app:new_encuesta' id=encuesta_base.id %}">
+                            <div class="card-body text-center card_encuesta">
+                                {{ encuesta_base.name }}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            {% for municipio in municipio_list %}
+                <div class="col-sm-12 col-md-12">
+                    <div class="card sm-12 mb-4 box-shadow">
+                        <div class="progress">
+                            <div 
+                                class="progress-bar " 
+                                role="progressbar" 
+                                style="width: {{ municipio.total_entregadas|get_percentage:municipio.total_distribuciones }}%;" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                {{ municipio.total_entregadas|get_percentage:municipio.total_distribuciones }}%
+                            </div>
+                        </div>
+                        {% if municipio.total_faltantes %}
+                            <a class="text-decoration-none"
+                               href="{% url 'app:new_encuesta'  id=id municipio=municipio.municipio_slug %}">
+                                <div class="card-body text-center  card_municipio">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes">
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ municipio.total_faltantes }}</div>
+                                    </div>
+                                    {{ municipio.municipio_name }}
+                                </div>
+                                <div class="text-center">
+                                    <small class="count_ditribution text-muted font_grande">{{ municipio.total_entregadas }}
+                                        / {{ municipio.total_distribuciones }}</small>
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="card-body text-center  card_gray">
+                                <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                    <!-- Texto en la Bolita -->
+                                    <div class="text-center text-white pop-round-faltantes-text">{{ municipio.total_faltantes }}</div>
+                                </div>
+                                {{ municipio.municipio_name }}
+                            </div>
+                            <div class="text-center">
+                                <small class="count_ditribution text-muted font_grande">{{ municipio.total_entregadas }}
+                                    / {{ municipio.total_distribuciones }}</small>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% if comuna_list %}
+                <a href="{% url 'app:vista_faltantes' id=id municipio=municipio%}">
+                    Vista Faltantes
+                </a>
+            {% endif %}
+
+            {% for comuna in comuna_list %}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="progress">
+                            <div 
+                                class="progress-bar " 
+                                role="progressbar" 
+                                style="width: {{ comuna.total_entregadas|get_percentage:comuna.total_distribuciones }}%;" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                {{ comuna.total_entregadas|get_percentage:comuna.total_distribuciones }}%
+                            </div>
+                        </div>
+                        {% if comuna.total_faltantes > 0%}
+                            <a class="text-decoration-none"
+                               href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna.slug %}">
+                                <div class="card-body text-center  card_comuna">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ comuna.total_faltantes }}</div>
+                                    </div>
+                                    {{ comuna.name }}
+                                </div>
+                                <div class="text-center">
+                                    <small class="count_ditribution text-muted font_grande">{{ comuna.total_entregadas }}
+                                        / {{ comuna.total_distribuciones }}</small>
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="card-body text-center  card_gray">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ comuna.total_faltantes }}</div>
+                                    </div>
+                                {{ comuna.name }}
+                            </div>
+                            <div class="text-center">
+                                <small class="count_ditribution text-muted font_grande">{{ comuna.total_entregadas }}
+                                    / {{ comuna.total_distribuciones }}</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+
+
+            {% for estrato in estrato_list %}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="progress">
+                            <div 
+                                class="progress-bar " 
+                                role="progressbar" 
+                                style="width: {{ estrato.total_entregadas|get_percentage:estrato.total_distribuciones }}%;" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                {{ estrato.total_entregadas|get_percentage:estrato.total_distribuciones }}%
+                            </div>
+                        </div>
+                        {% if estrato.total_faltantes > 0 %}
+
+                            <a class="text-decoration-none"
+                               href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna estrato=estrato.id %}">
+                                <div class="card-body text-center card_estrato">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ estrato.total_faltantes }}</div>
+                                    </div>
+                                   Estrato {{ estrato.name }}
+                                </div>
+                                <div class="text-center">
+                                    <small class="count_ditribution text-muted font_grande">{{ estrato.total_entregadas }}
+                                        / {{ estrato.total_distribuciones }}</small>
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="card-body text-center card_gray">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ estrato.total_faltantes }}</div>
+                                    </div>
+                               Estrato {{ estrato.name }}
+                            </div>
+                            <div class="text-center">
+                                <small class="count_ditribution text-muted font_grande">{{ estrato.total_entregadas }}
+                                    / {{ estrato.total_distribuciones }}</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            {% for barrio in barrio_list %}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="progress">
+                            <div 
+                                class="progress-bar " 
+                                role="progressbar" 
+                                style="width: {{ barrio.total_entregadas|get_percentage:barrio.total_distribuciones }}%;" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                {{ barrio.total_entregadas|get_percentage:barrio.total_distribuciones }}%
+                            </div>
+                        </div>
+                        {% if barrio.total_faltantes > 0 %}
+
+                            <a class="text-decoration-none"
+                               href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna estrato=estrato barrio=barrio.slug %}">
+                                <div class="card-body text-center card_barrio">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ barrio.total_faltantes }}</div>
+                                    </div>
+                                    {{ barrio.name }}
+                                </div>
+                                <div class="text-center">
+                                    <small class="count_ditribution text-muted font_grande">{{ barrio.total_entregadas }}
+                                        / {{ barrio.total_distribuciones }}</small>
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="card-body text-center card_gray">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ barrio.total_faltantes }}</div>
+                                    </div>
+                                {{ barrio.name }}
+                            </div>
+                            <div class="text-center">
+                                <small class="count_ditribution text-muted font_grande">{{ barrio.total_entregadas }}
+                                    / {{ barrio.total_distribuciones }}</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            {% for gender in gender_options %}
+                <div class="col-md-6">
+                    <div class="card mb-4 box-shadow">
+                        <div class="progress">
+                            <div 
+                                class="progress-bar " 
+                                role="progressbar" 
+                                style="width: {{ gender.total_entregadas|get_percentage:gender.total_distribuciones }}%;" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                {{ gender.total_entregadas|get_percentage:gender.total_distribuciones }}%
+                            </div>
+                        </div>
+                        {% if gender.total_faltantes > 0%}
+
+                            <a class="text-decoration-none"
+                               href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna estrato=estrato barrio=barrio gender=gender.name %}">
+                                <div class="card-body text-center card_gender">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ gender.total_faltantes }}</div>
+                                    </div>
+                                    {{ gender.name }}
+                                </div>
+                                <div class="text-center">
+                                    <small class="count_ditribution text-muted font_grande">{{ gender.total_entregadas }}
+                                        / {{ gender.total_distribuciones }}</small>
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="card-body text-center card_gray">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ gender.total_faltantes }}</div>
+                                    </div>
+                                {{ gender.name }}
+                            </div>
+                            <div class="text-center">
+                                <small class="count_ditribution text-muted font_grande">{{ gender.total_entregadas }}
+                                    / {{ gender.total_distribuciones }}</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            {% for range_opt in range_options %}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="progress">
+                            <div 
+                                class="progress-bar " 
+                                role="progressbar" 
+                                style="width: {{ range_opt.total_entregadas|get_percentage:range_opt.total_distribuciones }}%;" 
+                                aria-valuemin="0" 
+                                aria-valuemax="100">
+                                {{ range_opt.total_entregadas|get_percentage:range_opt.total_distribuciones }}%
+                            </div>
+                        </div>
+                        {% if range_opt.total_faltantes > 0 %}
+
+                            <a class="text-decoration-none"
+                               href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna estrato=estrato barrio=barrio gender=gender range_age=range_opt.name %}">
+                                <div class="card-body text-center card_range_opt">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ range_opt.total_faltantes }}</div>
+                                    </div>
+                                    {{ range_opt.name }}
+                                </div>
+                                <div class="text-center">
+                                    <small class="count_ditribution text-muted font_grande">{{ range_opt.total_entregadas }}
+                                        / {{ range_opt.total_distribuciones }}</small>
+                                </div>
+                            </a>
+                        {% else %}
+
+                            <div class="card-body text-center card_gray">
+                                    <div class="position-absolute rounded-circle pop-round-faltantes" >
+                                        <!-- Texto en la Bolita -->
+                                        <div class="text-center text-white pop-round-faltantes-text">{{ range_opt.total_faltantes }}</div>
+                                    </div>
+                                {{ range_opt.name }}
+                            </div>
+                            <div class="text-center">
+                                <small class="count_ditribution text-muted font_grande">{{ range_opt.total_entregadas }}
+                                    / {{ range_opt.total_distribuciones }}</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+{% endblock %}

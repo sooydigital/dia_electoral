@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load permissions_tags %}
+{% block content %}
+    {% include "breadcrumb.html" %}
+
+    <div class="container">
+        <a class="text-decoration-none" href="javascript:history.back()">
+            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+             Volver Atrás
+         </a>
+
+        <h2 class="third_color_text text-center">
+            <i class="fa  fa-cubes" aria-hidden="true"></i>
+            Comunas Faltantes
+        </h2>
+        <div class="row">
+            {% for comuna in comuna_list %}
+                {% if comuna.total_entregadas < comuna.total_distribuciones%}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                            <div class="progress">
+                                <div
+                                    class="progress-bar "
+                                    role="progressbar"
+                                    style="width: {{ comuna.total_entregadas|get_percentage:comuna.total_distribuciones }}%;"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100">
+                                    {{ comuna.total_entregadas|get_percentage:comuna.total_distribuciones }}%
+                                </div>
+                            </div>
+                            <a class="text-decoration-none"
+                               href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=comuna.slug %}">
+                                <div class="card-body text-center  card_comuna">
+                                    {{ comuna.name }}
+                                </div>
+                                <div class="text-center">
+                                    <small class="count_ditribution text-muted font_grande">
+                                        {{ comuna.total_entregadas }}
+                                        / {{ comuna.total_distribuciones }}</small>
+                                </div>
+                            </a>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <h2 class="third_color_text text-center">
+            <i class="fa  fa-cubes" aria-hidden="true"></i>
+            Barrios Faltantes
+        </h2>
+            <div class="row">
+            {% for barrio in barrio_list %}
+                {% if barrio.total_faltantes > 0 %}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="progress">
+                            <div
+                                class="progress-bar "
+                                role="progressbar"
+                                style="width: {{ barrio.total_entregadas|get_percentage:barrio.total_distribuciones }}%;"
+                                aria-valuemin="0"
+                                aria-valuemax="100">
+                                {{ barrio.total_entregadas|get_percentage:barrio.total_distribuciones }}%
+                            </div>
+                        </div>
+                        <a class="text-decoration-none"
+                           href="{% url 'app:new_encuesta' id=id municipio=municipio comuna=barrio.comuna_slug estrato=barrio.estrato_id barrio=barrio.slug %}"
+                        >
+
+                            <div class="card-body text-center card_barrio">
+                                {{ barrio.name }}
+                                ({{ barrio.comuna_name }})
+                            </div>
+                            <div class="text-center">
+                                <small class="count_ditribution text-muted font_grande">{{ barrio.total_entregadas }}
+                                    / {{ barrio.total_distribuciones }}</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
