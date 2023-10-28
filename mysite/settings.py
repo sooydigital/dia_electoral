@@ -40,7 +40,19 @@ INSTALLED_APPS = [
     'myapp.apps.MyappConfig',
     # 'corsheaders',
     # 'rest_framework',
+    # 'rest_framework.authtoken'
 ]
+
+#
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.TokenAuthentication',
+#     ],
+# }
+#
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000',  # Ajusta esto con la URL de tu aplicación React
+# ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'

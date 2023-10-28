@@ -7,4 +7,5 @@ ALL_GROUP = ['SUPER_ADMIN', 'TESTIGO']
 class Command(BaseCommand):
     def handle(self, *args, **options):
         for group in ALL_GROUP:
-            Group.objects.create(name=group)
+            if not Group.objects.filter(name=group).exists():
+                Group.objects.create(name=group)
