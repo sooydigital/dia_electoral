@@ -16,7 +16,7 @@
                 </li>
                 {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR' %}
                         <li class="nav-item">
-                            <a class="nav-link text-center" href="#">
+                            <a class="nav-link text-center" href="{% url 'app:distribucion' %}">
                                 <i class="fa fa-4x fa-calculator" aria-hidden="true"></i> <br>
                                 Parametros
                             </a>
@@ -28,20 +28,6 @@
                         </a>
                     </li>
                     {% if request.user|has_role:'SUPER_ADMIN' %}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link text-center" href="#">
-{#                                <i class="fa fa-4x fa-area-chart" aria-hidden="true"></i> <br>#}
-{#                                Estadística por Encuesta#}
-{#                            </a>#}
-{#                        </li>#}
-
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link text-center" href="##}
-{#                                <i class="fa fa-4x fa-map-marker" aria-hidden="true"></i> <br>#}
-{#                                GEO-Mapa#}
-{#                            </a>#}
-{#                        </li>#}
-
                         <li class="nav-item">
                             <a class="nav-link text-center" href="#">
                                 <i class="fa fa-4x fa-area-chart" aria-hidden="true"></i> <br>
@@ -52,24 +38,6 @@
                             <a class="nav-link text-center" href="#">
                                 <i class="fa fa-4x fa-map-marker" aria-hidden="true"></i> <br>
                                  GEO-Mapa
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-center" href="#">
-                                <i class="fa fa-tasks fa-4x" aria-hidden="true"></i> <br>
-                                Comparative
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-center" href="#">
-                                <i class="fa fa-4x fa-area-chart" aria-hidden="true"></i> <br>
-                                Proyecciones
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-center" href="#">
-                                <i class="fa fa-4x fa-file-text" aria-hidden="true"></i> <br>
-                                 Descargas
                             </a>
                         </li>
 

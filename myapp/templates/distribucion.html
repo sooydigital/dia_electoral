@@ -7,46 +7,29 @@
 
         DISTRIBUCIONES </h1>
     <br>
-    {% for pull_base in pull_base_list %}
-        <div class="col-md-12">
-            <div class="card mb-4 box-shadow">
-                <a class="text-decoration-none"
-                   href="{% url 'app:distribucion' id=pull_base.id %}">
-                    <div class="card-body text-center card_encuesta">
-                        {{ pull_base.name }}
-                    </div>
-                </a>
-            </div>
-        </div>
-    {% endfor %}
 
-
-    {% if municipios %}
+    {% if registros %}
         <table class="table text-center">
             <thead class="thead-dark principal_color text-white">
             <tr>
                 <th scope="col"> #</th>
-                <th scope="col">Municipio</th>
-                <th scope="col">Encuestas Realizadas / Encuestas Totales</th>
-                <th scope="col">Encuestas Faltantes</th>
+                <th scope="col">Puesto</th>
+                <th scope="col">Testigo CC</th>
+                <th scope="col">Testigo nombre</th>
+                <th scope="col">Mesa</th>
             </tr>
             </thead>
             <tbody>
 
-            {% for municipio in municipios %}
+            {% for registro in registros %}
 
                 <tr>
                     <th scope="row"><span class="secondary_color_text font-weight-bold">{{ forloop.counter }}</span>
                     </th>
-                    <td>
-
-                        <a class="text-decoration-none" href="{% url 'app:distribucion' id=id municipio=municipio.municipio_slug %}">
-                            {{ municipio.municipio_name }}
-                        </a>
-
-                    </td>
-                    <td>{{ municipio.total_entregadas }} / {{ municipio.total_distribuciones }}</td>
-                    <td>{{ municipio.total_distribuciones|difference:municipio.total_entregadas }}</td>
+                    <td>{{ registro.mesa__puesto_votacion__nombre }}</td>
+                    <td>{{ registro.testigo__username }}</td>
+                    <td>{{ registro.testigo__first_name }}</td>
+                    <td>{{ registro.mesa__numero }}</td>
                 </tr>
 
             {% endfor %}

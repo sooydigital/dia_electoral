@@ -28,6 +28,18 @@ def dashboard(request):
         request,
         'dashboard.html',
         context
+    )\
+
+@login_required
+def distribucion(request):
+    user = request.user
+
+    registros = Controller.get_registros_mesas()
+    context = {'registros': registros}
+    return render(
+        request,
+        'distribucion.html',
+        context
     )
 
 @login_required

@@ -140,3 +140,32 @@ class Controller():
 
 
         return data
+
+    @staticmethod
+    def get_registros_mesas():
+        registros = Registro.objects.values(
+            'mesa__puesto_votacion__nombre',
+            'mesa__numero',
+            'testigo__username',
+            'testigo__first_name',
+        ).distinct().all()
+
+        result = []
+
+        grouped_data = {}
+        for item in registros:
+            key = (item['mesa__puesto_votacion__nombre'], item['testigo__username'], item['testigo__first_name'])
+            if key in grouped_data:
+                grouped_data[key]['mesa__numero'].append(item['mesa__numero'])
+            else:
+                grouped_data[key] = {
+                    'mesa__puesto_votacion__nombre': item['mesa__puesto_votacion__nombre'],
+                    'testigo__username': item['testigo__username'],
+                    'testigo__first_name': item['testigo__first_name'],
+                    'mesa__numero': [item['mesa__numero']],
+                }
+
+        result = list(grouped_data.values())
+        result = sorted(result, key=lambda x: x['mesa__puesto_votacion__nombre'])
+
+        return result
