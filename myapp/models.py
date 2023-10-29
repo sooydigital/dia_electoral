@@ -201,7 +201,9 @@ class Candidato(models.Model):
     )
     partido = models.CharField(
         max_length=1024,
-        verbose_name="nombre del partido"
+        verbose_name="nombre del partido",
+        null=True,
+        default=None,
     )
     numero = models.CharField(
         max_length=3,
