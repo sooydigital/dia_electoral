@@ -3,6 +3,11 @@ from django.db.models import Count
 from django.db.models import Sum
 
 
+# Función para verificar si una lista contiene solo elementos nulos
+def lista_contiene_nulos(lista):
+    return all(valor is None for valor in lista)
+
+
 class Controller():
 
     @staticmethod
@@ -174,7 +179,7 @@ class Controller():
 
 
     @staticmethod
-    def get_resumen_registros():
+    def get_resumen_registros(with_null=True):
         registros = Registro.objects.values(
             'mesa__puesto_votacion__nombre',
             'mesa__numero',
@@ -201,6 +206,9 @@ class Controller():
                 }
 
         result = list(grouped_data.values())
+        if not with_null:
+            result = [d for d in result if not lista_contiene_nulos(d.get("candidatos"))]
+
         result = sorted(result, key=lambda x: (x['mesa__puesto_votacion__nombre'], x['mesa__numero']))
 
         return result

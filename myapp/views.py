@@ -42,7 +42,8 @@ def distribucion(request):
 
 @login_required
 def testigos(request):
-    registros = Controller.get_resumen_registros()
+    parameter_value = request.GET.get('with_null') in ['false', 'False']
+    registros = Controller.get_resumen_registros(not parameter_value)
     context = {'registros': registros}
     return render(
         request,
