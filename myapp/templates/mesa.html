@@ -27,10 +27,10 @@
                         <br>
                         <label class="h3 font-weight-bold" for="campo1"><strong>{{ candidato.1 }}: </strong></label>
                         <div class="input-group">
-                            <input name="valor" type="number" class="form-control" value="{{ candidato.2 }}">
+                            <input name="valor" type="number" class="form-control input-readonly-if-have-value" value="{{ candidato.2 }}">
                             &nbsp;
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button type="button" class="btn btn-info text-light edit-button"><i class="fa-solid fa-pen-to-square"></i></button>
                                 <button type="button" class="btn btn-success update-button" data-id="{{ candidato.0 }}"><i class="fa-regular fa-floppy-disk"></i></button>
                             </span>
                         </div>
@@ -70,8 +70,7 @@ $(document).ready(function () {
                 "X-CSRFToken": csrfToken  // Incluir el token CSRF en el encabezado
             },
             success: function (data) {
-                // Maneja la respuesta si es necesario
-                console.log("Actualización exitosa");
+                {#validateReadOnly();#}
             },
             error: function (xhr, status, error) {
                 // Maneja errores si es necesario
@@ -79,7 +78,35 @@ $(document).ready(function () {
             }
         });
     });
+    validateReadOnly();
+
+
+
 });
+
+    // Cuando se haga clic en el botón "Editar"
+    $(".edit-button").click(function() {
+        // Habilita el campo de entrada
+        var input = $(this).closest(".input-group").find("input");
+        input.prop("disabled", false);
+    });
+
+    // Cuando se haga clic en el botón "Guardar"
+    $(".update-button").click(function() {
+        // Deshabilita el campo de entrada
+        var input = $(this).closest(".input-group").find("input");
+        console.log(input)
+        input.prop("disabled", true);
+    });
+
+function validateReadOnly() {
+    $(".input-readonly-if-have-value").each(function() {
+        if ($(this).val() !== "") {
+            $(this).prop("disabled", true);  // Agrega el atributo "disabled"
+            $(this).addClass("disabled");
+        }
+    });
+}
 </script>
 
 
