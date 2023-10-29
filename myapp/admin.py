@@ -52,8 +52,8 @@ class CandidatoAdmin(admin.ModelAdmin):
 
 
 class RegistroAdmin(admin.ModelAdmin):
-    list_display = ('id', 'cantidato', 'puesto_votacion', 'numero_de_votos')
-    search_fields = ('cantidato', 'puesto_votacion', )
+    list_display = ('id', 'candidato', 'mesa', 'numero_de_votos')
+    search_fields = ('candidato', 'mesa', )
 
 
 # locations

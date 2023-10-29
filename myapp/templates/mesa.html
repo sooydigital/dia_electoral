@@ -2,6 +2,7 @@
 {% load static %} {% load permissions_tags %}
 {% block content %}
 <div class="container">
+    <br>
     <a href="/" class="btn btn-primary">
         <i class="fa-solid fa-arrow-left "></i>
 
@@ -13,157 +14,32 @@
 
     <!-- El formulario con Bootstrap -->
     <form id="miFormulario">
-        <div class="row">
+        {% for candidatura, candidatos in registros.items %}
+            <div class="row">
             <div class="h3 col-xs-12 text-center bg-primary text-white">
-                Alcaldía
+                {{ candidatura }}
             </div>
             <br>
             <div class="col-md-12">
-                <!-- Campo 1 -->
-                <div class=" form-group">
-                    <br>
-                    <label class="h3 font-weight-bold" for="campo1"><strong>Carlos Sotomonte: </strong></label>
-                    <div class="input-group">
-                        <input type="number" class="form-control">
-                        &nbsp;
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn btn-success "><i class="fa-regular fa-floppy-disk"></i></button>
-                        </span>
+                {% for candidato in candidatos %}
+                    <div class=" form-group">
+                        <br>
+                        <label class="h3 font-weight-bold" for="campo1"><strong>{{ candidato.1 }}: </strong></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control">
+                            &nbsp;
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button type="button" class="btn btn-success "><i class="fa-regular fa-floppy-disk"></i></button>
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class=" form-group">
-                    <br>
-                    <label class="h3 font-weight-bold" for="campo1"><strong>Jaime Beltran: </strong></label>
-                    <div class="input-group">
-                        <input type="number" class="form-control">
-                        &nbsp;
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i></button>
-                        </span>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
-        <br>
-        <div class="row">
-            <div class="h3 col-xs-12 text-center bg-primary text-white">
-                Gobernación
-            </div>
-            <br>
-            <div class="col-md-12">
-                <!-- Campo 1 -->
-                <div class=" form-group">
-                    <br>
-                    <label class="h3 font-weight-bold" for="campo1"><strong>Juvenal Díaz: </strong></label>
-                    <div class="input-group">
-                        <input type="number" class="form-control">
-                        &nbsp;
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i></button>
-                        </span>
-                    </div>
-                </div>
-                <div class=" form-group">
-                    <br>
-                    <label class="h3 font-weight-bold" for="campo1"><strong>Héctor Mantilla: </strong></label>
-                    <div class="input-group">
-                        <input type="number" class="form-control">
-                        &nbsp;
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i></button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
+             <br>
+        {% endfor %}
 
-        <div class="row">
-            <div class="h3 col-xs-12 text-center bg-primary text-white">
-                Concejo
-            </div>
-            <br>
-            <div class="col-md-12">
-                <!-- Campo 1 -->
-                <div class=" form-group">
-                    <br>
-                    <label class="h3 font-weight-bold" for="campo1"><strong>E 10: </strong></label>
-                    <div class="input-group">
-                        <input type="number" class="form-control">
-                        &nbsp;
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i></button>
-                        </span>
-                    </div>
-                </div>
-                <div class=" form-group">
-                    <br>
-                    <label class="h3 font-weight-bold" for="campo1"><strong>F 21: </strong></label>
-                    <div class="input-group">
-                        <input type="number" class="form-control">
-                        &nbsp;
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i></button>
-                        </span>
-                    </div>
-                </div>
-                <div class=" form-group">
-                    <br>
-                    <label class="h3 font-weight-bold" for="campo1"><strong>A 15: </strong></label>
-                    <div class="input-group">
-                        <input type="number" class="form-control">
-                        &nbsp;
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i></button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
-
-        <div class="row">
-            <div class="h3 col-xs-12 text-center bg-primary text-white">
-                Asamblea
-            </div>
-            <br>
-            <div class="col-md-12">
-                <!-- Campo 1 -->
-                <div class=" form-group">
-                    <br>
-                    <label class="h3 font-weight-bold" for="campo1"><strong>Q 23: </strong></label>
-                    <div class="input-group">
-                        <input type="number" class="form-control">
-                        &nbsp;
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i></button>
-                        </span>
-                    </div>
-                </div>
-                <div class=" form-group">
-                    <br>
-                    <label class="h3 font-weight-bold" for="campo1"><strong>R 17: </strong></label>
-                    <div class="input-group">
-                        <input type="number" class="form-control">
-                        &nbsp;
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button type="button" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i></button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Otros campos aquí... -->
     </form>
 </div>
 {% endblock %}

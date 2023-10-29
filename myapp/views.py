@@ -18,9 +18,9 @@ def get_structure(request):
 @login_required
 def dashboard(request):
     user = request.user
-    context = Controller.get_structure(user)
-    mesa_list = [1, 2, 3]
-    context = {'mesa_list': mesa_list}
+
+    mesas = Controller.get_mesas_by_user(user)
+    context = {'mesa_list': mesas}
     return render(
         request,
         'dashboard.html',
@@ -30,9 +30,9 @@ def dashboard(request):
 @login_required
 def mesa(request, id):
     user = request.user
-    context = Controller.get_structure(user)
-    mesa_list = [1, 2, 3]
-    context = {'mesa_list': mesa_list}
+    registros = Controller.get_distribucion_by_mesa_and_user(user, mesa_id=id)
+
+    context = {'registros': registros}
     return render(
         request,
         'mesa.html',

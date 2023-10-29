@@ -4,15 +4,17 @@
     <br><br>
 <div class="row">
     {% if request.user|has_role:'TESTIGO' %}
-
-            {% for comuna in mesa_list %}
+        <h2>
+            Puesto: {{ mesa_list.0.mesa__puesto_votacion__nombre }}
+        </h2>
+            {% for mesa in mesa_list %}
                 <div class="col-md-4">
                 <div class="card mb-4 box-shadow">
                     <a class="text-decoration-none"
-                        href="{% url 'app:mesa' id=1 %}">
-                        <div class="card-body text-center  card_comuna">
+                        href="{% url 'app:mesa' id=mesa.mesa__id %}">
+                        <div class="card-body text-center card_comuna">
                             <i class="fa-solid fa-layer-group"></i>
-                           Mesa {{ comuna }}
+                           Mesa {{ mesa.mesa__numero }}
                         </div>
                     </a>
                 </div>

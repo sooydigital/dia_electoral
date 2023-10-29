@@ -221,7 +221,7 @@ class Registro(models.Model):
         primary_key=True,
         default=uuid.uuid4,
         editable=False)
-    cantidato = models.ForeignKey(
+    candidato = models.ForeignKey(
         Candidato,
         blank=True,
         null=True,
@@ -233,8 +233,8 @@ class Registro(models.Model):
         null=True,
         on_delete=models.CASCADE
     )
-    puesto_votacion = models.ForeignKey(
-        PuestoVotacion,
+    mesa = models.ForeignKey(
+        Mesa,
         blank=True,
         null=True,
         on_delete=models.CASCADE
