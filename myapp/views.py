@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 from myapp.controllers.controller import Controller
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-
+import uuid
+import json
 
 def get_structure(request):
     user = request.user
@@ -38,3 +41,15 @@ def mesa(request, id):
         'mesa.html',
         context
     )
+
+
+@require_http_methods(["PUT"])
+@csrf_exempt
+def update_registro(request, uuid_param):
+    data = json.loads(request.body.decode('utf-8'))
+    # Busca el registro que coincide con el UUID y actualízalo
+
+    response = Controller.actualiza_registro(uuid_param, data)
+
+    return JsonResponse({"response": response})
+

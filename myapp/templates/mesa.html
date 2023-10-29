@@ -13,7 +13,8 @@
     </div>
 
     <!-- El formulario con Bootstrap -->
-    <form id="miFormulario">
+    <form method="PUT" class="update-form">
+        {% csrf_token %}
         {% for candidatura, candidatos in registros.items %}
             <div class="row">
             <div class="h3 col-xs-12 text-center bg-primary text-white">
@@ -26,11 +27,11 @@
                         <br>
                         <label class="h3 font-weight-bold" for="campo1"><strong>{{ candidato.1 }}: </strong></label>
                         <div class="input-group">
-                            <input type="number" class="form-control">
+                            <input name="valor" type="number" class="form-control" value="{{ candidato.2 }}">
                             &nbsp;
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-info text-light"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button type="button" class="btn btn-success "><i class="fa-regular fa-floppy-disk"></i></button>
+                                <button type="button" class="btn btn-success update-button" data-id="{{ candidato.0 }}"><i class="fa-regular fa-floppy-disk"></i></button>
                             </span>
                         </div>
                     </div>
@@ -42,4 +43,45 @@
 
     </form>
 </div>
+{% endblock %}
+
+{% block scriptcontent %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    $(".update-button").click(function (e) {
+        e.preventDefault();  // Evitar la presentación del formulario por defecto
+
+        var form = $(this).closest(".update-form");
+        var valorInput = form.find('input[name="valor"]').val();
+        var registroCandidatoId = $(this).data("id");
+        var url = `/update_registro/${registroCandidatoId}/`;
+
+        // Obtener el valor del token CSRF
+        var csrfToken = form.find('input[name="csrfmiddlewaretoken"]').val();
+
+        // Enviar la solicitud AJAX incluyendo el token CSRF en el encabezado
+        $.ajax({
+            url: url,
+            type: "PUT",
+            data: JSON.stringify({ valor: valorInput }),
+            contentType: "application/json",
+            headers: {
+                "X-CSRFToken": csrfToken  // Incluir el token CSRF en el encabezado
+            },
+            success: function (data) {
+                // Maneja la respuesta si es necesario
+                console.log("Actualización exitosa");
+            },
+            error: function (xhr, status, error) {
+                // Maneja errores si es necesario
+                console.error("Error en la actualización: " + error);
+            }
+        });
+    });
+});
+</script>
+
+
+
 {% endblock %}

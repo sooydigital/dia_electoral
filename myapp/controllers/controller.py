@@ -16,20 +16,28 @@ class Controller():
     def get_distribucion_by_mesa_and_user(user, mesa_id):
         query = Registro.objects.filter(testigo=user, mesa_id=mesa_id)
         if query.exists():
-            distribucion = list(query.values('id', 'candidato__candidatura', 'candidato__nombre'))
+            distribucion = list(query.values('id', 'candidato__candidatura', 'candidato__nombre', 'numero_de_votos'))
 
             result_dict = {}
 
             for item in distribucion:
                 candidatura = item.get("candidato__candidatura")
                 if candidatura not in result_dict:
-                    result_dict[candidatura] = [[str(item.get("id")), item.get("candidato__nombre")]]
+                    result_dict[candidatura] = [[str(item.get("id")), item.get("candidato__nombre"), item.get('numero_de_votos')]]
                 else:
-                    result_dict[candidatura].append([str(item.get("id")), item.get("candidato__nombre")])
+                    result_dict[candidatura].append([str(item.get("id")), item.get("candidato__nombre"), item.get('numero_de_votos')])
 
             return result_dict
         else:
             return {}
+
+    @staticmethod
+    def actualiza_registro(uuid_obj, data):
+        registro = Registro.objects.get(id=uuid_obj)
+        valor = data.get('valor')
+        if valor.isnumeric():
+            registro.numero_de_votos = valor
+            registro.save()
 
     @staticmethod
     def get_structure(user):
