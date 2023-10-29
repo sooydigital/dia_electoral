@@ -2,149 +2,161 @@
 {% load static %} {% load permissions_tags %}
 {% block content %}
 <div class="container">
-    <h1 class="mt-5">Formulario</h1>
+    <div class="h2 text-center">Mesa #</div>
 
     <!-- El formulario con Bootstrap -->
     <form id="miFormulario">
-
         <div class="row">
-            <div class="h1 col-md-12">
-                <h1>Alcaldía</h1>
+            <div class="h3 col-xs-12 text-center">
+                Alcaldía
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+            <br>
+            <div class="col-md-12">
                 <!-- Campo 1 -->
-                <div class="form-group">
-                    <label class="h3" for="campo1">Carlos Sotomonte:</label>
-                    <input type="number" id="campo1" name="campo1" class="form-control" style="height: 60px;">
+                <div class=" form-group">
+                    <br>
+                    <label class="h3 font-weight-bold" for="campo1"><strong>Carlos Sotomonte: </strong></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control">
+                        &nbsp;
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info">Editar</button>
+                            <button type="button" class="btn btn-success">Guardar</button>
+                        </span>
+                    </div>
+                </div>
+                <div class=" form-group">
+                    <br>
+                    <label class="h3 font-weight-bold" for="campo1"><strong>Jaime Beltran: </strong></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control">
+                        &nbsp;
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info">Editar</button>
+                            <button type="button" class="btn btn-success">Guardar</button>
+                        </span>
+                    </div>
                 </div>
             </div>
-
-            <div class="col-md-3">
-                <button type="button" class="guardar btn btn-success" style="margin-top: 30px; height: 80px; width: 200px" data-field="campo1">Guardar</button>
-            </div>
         </div>
-<br>
+        <br>
         <div class="row">
-            <div class="col-md-6">
-                <!-- Campo 2 -->
-                <div class="form-group">
-                    <label class="h3" for="campo2">Jaime Beltran:</label>
-                    <input type="number" id="campo2" name="campo2" class="form-control" style="height: 60px;">
-                </div>
+            <div class="h3 col-xs-12 text-center">
+                Gobernación
             </div>
-
-            <div class="col-md-3">
-                <button type="button" class="guardar btn btn-success" style="margin-top: 30px; height: 80px; width: 200px" data-field="campo2">Guardar</button>
-            </div>
-        </div>
-<br>
-<br><br>
-        <div class="row">
-            <div class="h1 col-md-12">
-                <h1>Gobernación</h1>
-            </div>
-        </div>
-        <div class="row">
-            
-            <div class="col-md-6">
+            <br>
+            <div class="col-md-12">
                 <!-- Campo 1 -->
-                <div class="form-group">
-                    <label class="h3" for="campo1">Juvenal Díaz:</label>
-                    <input type="number" id="campo1" name="campo1" class="form-control" style="height: 60px;">
+                <div class=" form-group">
+                    <br>
+                    <label class="h3 font-weight-bold" for="campo1"><strong>Juvenal Díaz: </strong></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control">
+                        &nbsp;
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info">Editar</button>
+                            <button type="button" class="btn btn-success">Guardar</button>
+                        </span>
+                    </div>
+                </div>
+                <div class=" form-group">
+                    <br>
+                    <label class="h3 font-weight-bold" for="campo1"><strong>Héctor Mantilla: </strong></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control">
+                        &nbsp;
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info">Editar</button>
+                            <button type="button" class="btn btn-success">Guardar</button>
+                        </span>
+                    </div>
                 </div>
             </div>
+        </div>
+        <br>
 
-            <div class="col-md-3">
-                <button type="button" class="guardar btn btn-success" style="margin-top: 30px; height: 80px; width: 200px" data-field="campo1">Guardar</button>
-            </div>
-        </div>
-<br>
         <div class="row">
-            <div class="col-md-6">
-                <!-- Campo 2 -->
-                <div class="form-group">
-                    <label class="h3" for="campo2">Héctor Mantilla:</label>
-                    <input type="number" id="campo2" name="campo2" class="form-control" style="height: 60px;">
-                </div>
+            <div class="h3 col-xs-12 text-center">
+                Concejo
             </div>
-
-            <div class="col-md-3">
-                <button type="button" class="guardar btn btn-success" style="margin-top: 30px; height: 80px; width: 200px" data-field="campo2">Guardar</button>
-            </div>
-        </div>
-<br>
-        <br><br>
-        <div class="row">
-            <div class="h1 col-md-12">
-                <h1>Concejo</h1>
-            </div>
-        </div>
-        <div class="row">
-            
-            <div class="col-md-6">
+            <br>
+            <div class="col-md-12">
                 <!-- Campo 1 -->
-                <div class="form-group">
-                    <label class="h3" for="campo1">L 10:</label>
-                    <input type="number" id="campo1" name="campo1" class="form-control" style="height: 60px;">
+                <div class=" form-group">
+                    <br>
+                    <label class="h3 font-weight-bold" for="campo1"><strong> 10: </strong></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control">
+                        &nbsp;
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info">Editar</button>
+                            <button type="button" class="btn btn-success">Guardar</button>
+                        </span>
+                    </div>
+                </div>
+                <div class=" form-group">
+                    <br>
+                    <label class="h3 font-weight-bold" for="campo1"><strong>F 21: </strong></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control">
+                        &nbsp;
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info">Editar</button>
+                            <button type="button" class="btn btn-success">Guardar</button>
+                        </span>
+                    </div>
+                </div>
+                <div class=" form-group">
+                    <br>
+                    <label class="h3 font-weight-bold" for="campo1"><strong>A 15: </strong></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control">
+                        &nbsp;
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info">Editar</button>
+                            <button type="button" class="btn btn-success">Guardar</button>
+                        </span>
+                    </div>
                 </div>
             </div>
+        </div>
+        <br>
 
-            <div class="col-md-3">
-                <button type="button" class="guardar btn btn-success" style="margin-top: 30px; height: 80px; width: 200px" data-field="campo1">Guardar</button>
-            </div>
-        </div>
-<br>
         <div class="row">
-            <div class="col-md-6">
-                <!-- Campo 2 -->
-                <div class="form-group">
-                    <label class="h3" for="campo2">F 21:</label>
-                    <input type="number" id="campo2" name="campo2" class="form-control" style="height: 60px;">
-                </div>
+            <div class="h3 col-xs-12 text-center">
+                Asamblea
             </div>
-
-            <div class="col-md-3">
-                <button type="button" class="guardar btn btn-success" style="margin-top: 30px; height: 80px; width: 200px" data-field="campo2">Guardar</button>
-            </div>
-        </div>
-<br>
-        <br><br>
-        <div class="row">
-            <div class="h1 col-md-12">
-                <h1>Asamblea</h1>
-            </div>
-        </div>
-        <div class="row">
-            
-            <div class="col-md-6">
+            <br>
+            <div class="col-md-12">
                 <!-- Campo 1 -->
-                <div class="form-group">
-                    <label class="h3" for="campo1">Q 23:</label>
-                    <input type="number" id="campo1" name="campo1" class="form-control" style="height: 60px;">
+                <div class=" form-group">
+                    <br>
+                    <label class="h3 font-weight-bold" for="campo1"><strong>Q 23: </strong></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control">
+                        &nbsp;
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info">Editar</button>
+                            <button type="button" class="btn btn-success">Guardar</button>
+                        </span>
+                    </div>
+                </div>
+                <div class=" form-group">
+                    <br>
+                    <label class="h3 font-weight-bold" for="campo1"><strong>R 17: </strong></label>
+                    <div class="input-group">
+                        <input type="number" class="form-control">
+                        &nbsp;
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-info">Editar</button>
+                            <button type="button" class="btn btn-success">Guardar</button>
+                        </span>
+                    </div>
                 </div>
             </div>
-
-            <div class="col-md-3">
-                <button type="button" class="guardar btn btn-success" style="margin-top: 30px; height: 80px; width: 200px" data-field="campo1">Guardar</button>
-            </div>
         </div>
-<br>
-        <div class="row">
-            <div class="col-md-6">
-                <!-- Campo 2 -->
-                <div class="form-group">
-                    <label class="h3" for="campo2">R 17:</label>
-                    <input type="number" id="campo2" name="campo2" class="form-control" style="height: 60px;">
-                </div>
-            </div>
 
-            <div class="col-md-3">
-                <button type="button" class="guardar btn btn-success" style="margin-top: 30px; height: 80px; width: 200px" data-field="campo2">Guardar</button>
-            </div>
-        </div>
-        <!-- Otros campos aquí... --><br>
+        <!-- Otros campos aquí... -->
     </form>
 </div>
 {% endblock %}
