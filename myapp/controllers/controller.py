@@ -1,5 +1,7 @@
 from myapp.models import Registro
 from django.db.models import Count
+from django.db.models import Sum
+
 
 class Controller():
 
@@ -203,3 +205,16 @@ class Controller():
 
         return result
 
+    @staticmethod
+    def get_resumen_registros_para_graficos():
+
+        registros = Registro.objects.values(
+            'candidato__nombre',
+            'numero_de_votos'
+        ).order_by('candidato__id').all()
+
+        result = Registro.objects.values('candidato__candidatura', 'candidato__nombre') \
+            .annotate(total_votos=Sum('numero_de_votos')) \
+            .order_by('candidato__id')
+        print(result)
+        return list(result)

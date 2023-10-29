@@ -9,6 +9,6 @@ urlpatterns = [
     path('estadistica_por_encuestador', views.dashboard, name='estadistica_por_encuestador'),
     path('distribucion', views.distribucion, name='distribucion'),
     path('testigos', views.testigos, name='testigos'),
-    path('estadisticas', views.distribucion, name='estadisticas'),
+    path('estadisticas', views.estadisticas, name='estadisticas'),
     path('geomapa', views.distribucion, name='geomapa'),
 ]

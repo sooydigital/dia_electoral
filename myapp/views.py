@@ -32,8 +32,6 @@ def dashboard(request):
 
 @login_required
 def distribucion(request):
-    user = request.user
-
     registros = Controller.get_registros_mesas()
     context = {'registros': registros}
     return render(
@@ -44,13 +42,22 @@ def distribucion(request):
 
 @login_required
 def testigos(request):
-    user = request.user
-
     registros = Controller.get_resumen_registros()
     context = {'registros': registros}
     return render(
         request,
         'resumen.html',
+        context
+    )
+
+
+@login_required
+def estadisticas(request):
+    registros = Controller.get_resumen_registros_para_graficos()
+    context = {'registros': registros}
+    return render(
+        request,
+        'estadistica_v3.html',
         context
     )
 

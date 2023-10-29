@@ -5,7 +5,7 @@
     <h1 class="third_color_text text-center">
         <i class="fa  fa-calculator" aria-hidden="true"></i>
 
-        Reporte Testigos </h1>
+        Resumen </h1>
     <br>
 
     {% if registros %}
@@ -13,14 +13,9 @@
             <thead class="thead-dark principal_color text-white">
             <tr>
                 <th scope="col"> #</th>
-                <th scope="col">Puesto</th>
-                <th scope="col">Testigo</th>
-                <th scope="col">Mesa</th>
-                <th scope="col">Carlos Sotomonte</th>
-                <th scope="col">Jaime Beltran</th>
-                <th scope="col">Juvenal Díaz</th>
-                <th scope="col">Hector Mantilla</th>
-                <th scope="col">Cambio Radical 10</th>
+                <th scope="col">Candidatura</th>
+                <th scope="col">Candidato</th>
+                <th scope="col">Numero de votos</th>
             </tr>
             </thead>
             <tbody>
@@ -30,14 +25,9 @@
                 <tr>
                     <th scope="row"><span class="secondary_color_text font-weight-bold">{{ forloop.counter }}</span>
                     </th>
-                    <td>{{ registro.mesa__puesto_votacion__nombre }}</td>
-                    <td>{{ registro.testigo__username }} <br> {{ registro.testigo__first_name }}</td>
-                    <td>{{ registro.mesa__numero }}</td>
-                    <td>{{ registro.candidatos.0 }}</td>
-                    <td>{{ registro.candidatos.1 }}</td>
-                    <td>{{ registro.candidatos.2 }}</td>
-                    <td>{{ registro.candidatos.3 }}</td>
-                    <td>{{ registro.candidatos.4 }}</td>
+                    <td>{{ registro.candidato__candidatura }}</td>
+                    <td>{{ registro.candidato__nombre }}
+                    <td>{{ registro.total_votos }}</td>
                 </tr>
 
             {% endfor %}
