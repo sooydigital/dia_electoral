@@ -207,7 +207,9 @@ class Candidato(models.Model):
     )
     numero = models.CharField(
         max_length=3,
-        verbose_name="numero"
+        verbose_name="numero",
+        null=True,
+        default=None,
     )
 
 
