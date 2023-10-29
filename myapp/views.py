@@ -43,6 +43,18 @@ def distribucion(request):
     )
 
 @login_required
+def testigos(request):
+    user = request.user
+
+    registros = Controller.get_resumen_registros()
+    context = {'registros': registros}
+    return render(
+        request,
+        'resumen.html',
+        context
+    )
+
+@login_required
 def mesa(request, id):
     user = request.user
     registros = Controller.get_distribucion_by_mesa_and_user(user, mesa_id=id)

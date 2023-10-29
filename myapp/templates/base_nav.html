@@ -22,20 +22,20 @@
                             </a>
                         </li>
                     <li class="nav-item">
-                        <a class="nav-link text-center" href="#">
+                        <a class="nav-link text-center" href="{% url 'app:testigos' %}">
                             <i class="fa fa-4x fa-users" aria-hidden="true"></i> <br>
-                            Encuestadores
+                            Testigos
                         </a>
                     </li>
                     {% if request.user|has_role:'SUPER_ADMIN' %}
                         <li class="nav-item">
-                            <a class="nav-link text-center" href="#">
+                            <a class="nav-link text-center" href="{% url 'app:estadisticas' %}">
                                 <i class="fa fa-4x fa-area-chart" aria-hidden="true"></i> <br>
                                 Estadisticas
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-center" href="#">
+                            <a class="nav-link text-center" href="{% url 'app:geomapa' %}">
                                 <i class="fa fa-4x fa-map-marker" aria-hidden="true"></i> <br>
                                  GEO-Mapa
                             </a>
