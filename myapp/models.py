@@ -92,7 +92,15 @@ class Barrio(models.Model):
         blank=True,
         null=True,
         on_delete=models.CASCADE
+    )    
+    
+    comuna = models.ForeignKey(
+        Comuna,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
     )
+
     name = models.CharField(
         max_length=1024,
         verbose_name="nombre del barrio"
@@ -215,6 +223,12 @@ class Registro(models.Model):
         null=True,
         on_delete=models.CASCADE
     )
+    testigo = models.ForeignKey(
+        User,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
     puesto_votacion = models.ForeignKey(
         PuestoVotacion,
         blank=True,
@@ -222,7 +236,7 @@ class Registro(models.Model):
         on_delete=models.CASCADE
     )
 
-    numero_de_votos = models.PositiveIntegerField()
+    numero_de_votos = models.PositiveIntegerField(default=None, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

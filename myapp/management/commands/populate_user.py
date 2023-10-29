@@ -89,7 +89,7 @@ class Command(BaseCommand):
                 if not User.objects.filter(email=fake_email).exists():
                     user_object = User(username=document_id, email=fake_email, first_name=nombre, last_name="")
                     user_object.set_password(document_id)
-                    # user_object.groups.add(grupo_testigo)
                     user_object.save()
+                    user_object.groups.add(grupo_testigo)
 
                     print(">>> User with document id: '{}' created".format(document_id))
