@@ -53,7 +53,7 @@ $(document).ready(function () {
         e.preventDefault();  // Evitar la presentación del formulario por defecto
 
         var form = $(this).closest(".update-form");
-        var valorInput = form.find('input[name="valor"]').val();
+        var valorInput =  $(this).closest(".input-group").find("input").val();
         var registroCandidatoId = $(this).data("id");
         var url = `/update_registro/${registroCandidatoId}/`;
 
@@ -79,25 +79,22 @@ $(document).ready(function () {
         });
     });
     validateReadOnly();
-
-
-
 });
 
-    // Cuando se haga clic en el botón "Editar"
-    $(".edit-button").click(function() {
-        // Habilita el campo de entrada
-        var input = $(this).closest(".input-group").find("input");
-        input.prop("disabled", false);
-    });
+// Cuando se haga clic en el botón "Editar"
+$(".edit-button").click(function() {
+    // Habilita el campo de entrada
+    var input = $(this).closest(".input-group").find("input");
+    input.prop("disabled", false);
+});
 
-    // Cuando se haga clic en el botón "Guardar"
-    $(".update-button").click(function() {
-        // Deshabilita el campo de entrada
-        var input = $(this).closest(".input-group").find("input");
-        console.log(input)
-        input.prop("disabled", true);
-    });
+// Cuando se haga clic en el botón "Guardar"
+$(".update-button").click(function() {
+    // Deshabilita el campo de entrada
+    var input = $(this).closest(".input-group").find("input");
+    console.log(input)
+    input.prop("disabled", true);
+});
 
 function validateReadOnly() {
     $(".input-readonly-if-have-value").each(function() {
@@ -107,6 +104,7 @@ function validateReadOnly() {
         }
     });
 }
+
 </script>
 
 

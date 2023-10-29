@@ -35,6 +35,9 @@ class Controller():
     def actualiza_registro(uuid_obj, data):
         registro = Registro.objects.get(id=uuid_obj)
         valor = data.get('valor')
+        if not valor:
+            return None
+        valor = valor.replace('.', "")
         if valor.isnumeric():
             registro.numero_de_votos = valor
             registro.save()

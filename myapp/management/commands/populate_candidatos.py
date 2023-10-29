@@ -6,11 +6,11 @@ Alcaldía;Carlos Sotomonte
 Alcaldía;Jaime Beltran
 Gobernación;Juvenal Díaz
 Gobernación;Hector Mantilla
-Concejo;L 10
-Concejo;F 21
-Concejo;A 15
-Asamblea;Q 23
-Asamblea;R 17'''
+Concejo;A1
+Concejo;B2
+Concejo;C3
+Asamblea;D1
+Asamblea;E2'''
 
 
 class Command(BaseCommand):
